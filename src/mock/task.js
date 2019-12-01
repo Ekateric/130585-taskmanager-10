@@ -6,6 +6,16 @@ const MockDescriptions = [
   `Пройти интенсив на соточку`
 ];
 
+const MockRepeatingDays = {
+  mo: false,
+  tu: false,
+  we: false,
+  th: false,
+  fr: false,
+  sa: false,
+  su: false
+};
+
 const getRandomDate = (daysBefore, daysAfter) => {
   let fromDate = new Date();
   let toDate = new Date();
@@ -18,10 +28,24 @@ const getRandomDate = (daysBefore, daysAfter) => {
   return new Date(getRandomIntegerNumber(fromDate, toDate));
 };
 
+const getRandomRepeatingDays = () => {
+  const repeatingDays = Object.assign({}, MockRepeatingDays);
+
+  for (let day in repeatingDays) {
+    if ({}.hasOwnProperty.call(day, repeatingDays)) {
+      repeatingDays[day] = Math.random() > 0.5;
+    }
+  }
+
+  return repeatingDays;
+};
+
 export const createTaskData = () => {
+  const dueDate = Math.random() > 0.5 ? getRandomDate(-7, 7) : null;
   return {
     description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
-    dueDate: Math.random() > 0.5 ? getRandomDate(-7, 7) : null
+    dueDate,
+    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays()
   };
 };
 

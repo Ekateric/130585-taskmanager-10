@@ -1,7 +1,7 @@
 import {getCorrectTime} from "../helpers";
 
 export const createTaskTemplate = (task) => {
-  const {description, dueDate} = task;
+  const {description, dueDate, repeatingDays} = task;
   const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
 
   return (
