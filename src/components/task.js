@@ -1,5 +1,8 @@
+import {getCorrectTime} from "../helpers";
+
 export const createTaskTemplate = (task) => {
-  const {description} = task;
+  const {description, dueDate} = task;
+  const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
 
   return (
     `<article class="card card--black">
@@ -35,8 +38,8 @@ export const createTaskTemplate = (task) => {
               <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
-                    <span class="card__date">23 September</span>
-                    <span class="card__time">11:15 PM</span>
+                    <span class="card__date">${day} ${month}</span>
+                    <span class="card__time">${time}</span>
                   </p>
                 </div>
               </div>
