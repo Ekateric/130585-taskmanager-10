@@ -16,6 +16,14 @@ const MockRepeatingDays = {
   su: false
 };
 
+const MockTags = [
+  `homework`,
+  `theory`,
+  `practice`,
+  `intensive`,
+  `keks`
+];
+
 const getRandomDate = (daysBefore, daysAfter) => {
   let fromDate = new Date();
   let toDate = new Date();
@@ -40,12 +48,23 @@ const getRandomRepeatingDays = () => {
   return repeatingDays;
 };
 
+const getRandomTags = () => {
+  const tagsCount = getRandomIntegerNumber(0, 3);
+  const mockTagsLength = MockTags.length;
+  let tags = new Array(tagsCount).fill(``);
+
+  tags = tags.map(() => MockTags[getRandomIntegerNumber(0, mockTagsLength - 1)]);
+
+  return new Set(tags);
+};
+
 export const createTaskData = () => {
   const dueDate = Math.random() > 0.5 ? getRandomDate(-7, 7) : null;
   return {
     description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
     dueDate,
-    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays()
+    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays(),
+    tags: getRandomTags()
   };
 };
 

@@ -1,8 +1,22 @@
 import {getCorrectTime} from "../helpers";
 
+const createTagsTemplate = (tags) => {
+  return Array.from(tags)
+    .map((tag) => {
+      return (
+        `<span class="card__hashtag-inner">
+          <span class="card__hashtag-name">
+            #${tag}
+          </span>
+        </span>`
+      );
+    }).join(`\n`);
+};
+
 export const createTaskTemplate = (task) => {
-  const {description, dueDate, repeatingDays} = task;
+  const {description, dueDate, repeatingDays, tags} = task;
   const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
+  const tagsTemplate = createTagsTemplate(tags);
 
   return (
     `<article class="card card--black">
@@ -46,23 +60,7 @@ export const createTaskTemplate = (task) => {
 
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #todo
-                    </span>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #personal
-                    </span>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <span class="card__hashtag-name">
-                      #important
-                    </span>
-                  </span>
+                  ${tagsTemplate}
                 </div>
               </div>
             </div>
