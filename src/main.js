@@ -26,7 +26,7 @@ render(siteMainElement, createFiltersTemplate(filters));
 render(siteMainElement, createBoardTemplate());
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-render(taskListElement, createTaskEditTemplate());
+//render(taskListElement, createTaskEditTemplate());
 tasks
   .slice(0, TASK_PER_PAGE)
   .forEach((task) => render(taskListElement, createTaskTemplate(task)));
