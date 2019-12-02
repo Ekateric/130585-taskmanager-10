@@ -14,12 +14,12 @@ const createTagsTemplate = (tags) => {
 };
 
 export const createTaskTemplate = (task) => {
-  const {description, dueDate, repeatingDays, tags} = task;
+  const {description, dueDate, repeatingDays, tags, color} = task;
   const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
   const tagsTemplate = createTagsTemplate(tags);
 
   return (
-    `<article class="card card--black">
+    `<article class="card card--${color}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">

@@ -14,6 +14,14 @@ export const Months = [
   `December`
 ];
 
+export const Colors = [
+  `black`,
+  `yellow`,
+  `blue`,
+  `green`,
+  `pink`
+];
+
 // Utilities
 export const getRandomIntegerNumber = (min, max) => min + Math.floor(Math.random() * (max + 1 - min));
 
