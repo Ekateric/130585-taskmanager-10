@@ -1,7 +1,7 @@
 import {createMenuTemplate} from "./components/menu";
 import {createFilterTemplate} from "./components/filter";
 import {createBoardTemplate} from "./components/board";
-import {createTaskData} from "./mock/task";
+import {createTasksData} from "./mock/tasks";
 import {createTaskTemplate} from "./components/task";
 import {createTaskEditTemplate} from "./components/task-edit";
 import {createLoadMoreButtonTemplate} from "./components/load-more-button";
@@ -22,11 +22,8 @@ render(siteMainElement, createBoardTemplate());
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 render(taskListElement, createTaskEditTemplate());
 
-new Array(TASK_COUNT)
-  .fill(``)
-  .forEach(
-      () => render(taskListElement, createTaskTemplate(createTaskData()))
-  );
+const tasks = createTasksData(TASK_COUNT);
+tasks.forEach((task) => render(taskListElement, createTaskTemplate(task)));
 
 const boardElement = siteMainElement.querySelector(`.board`);
 render(boardElement, createLoadMoreButtonTemplate());
