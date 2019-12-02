@@ -4,7 +4,7 @@ import {createFiltersTemplate} from "./components/filter";
 import {createBoardTemplate} from "./components/board";
 import {createTasksData} from "./mock/tasks";
 import {createTaskTemplate} from "./components/task";
-import {createTaskEditTemplate} from "./components/task-edit";
+// import {createTaskEditTemplate} from "./components/task-edit";
 import {createButtonLoadMoreTemplate} from "./components/button-load-more";
 import {getRandomIntegerNumber} from "./helpers";
 
@@ -26,7 +26,7 @@ render(siteMainElement, createFiltersTemplate(filters));
 render(siteMainElement, createBoardTemplate());
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-//render(taskListElement, createTaskEditTemplate());
+// render(taskListElement, createTaskEditTemplate());
 tasks
   .slice(0, TASK_PER_PAGE)
   .forEach((task) => render(taskListElement, createTaskTemplate(task)));
