@@ -65,7 +65,9 @@ export const createTaskData = () => {
     dueDate,
     repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays(),
     tags: getRandomTags(),
-    color: Colors[getRandomIntegerNumber(0, Colors.length - 1)]
+    color: Colors[getRandomIntegerNumber(0, Colors.length - 1)],
+    isFavorite: Math.random() > 0.5,
+    isArchive: Math.random() > 0.5
   };
 };
 

@@ -14,10 +14,12 @@ const createTagsTemplate = (tags) => {
 };
 
 export const createTaskTemplate = (task) => {
-  const {description, dueDate, repeatingDays, tags, color} = task;
+  const {description, dueDate, repeatingDays, tags, color, isFavorite, isArchive} = task;
   const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
   const tagsTemplate = createTagsTemplate(tags);
 
+  const favoriteClass = isFavorite ? `card__btn--disabled` : ``;
+  const archiveClass = isArchive ? `card__btn--disabled` : ``;
   return (
     `<article class="card card--${color}">
       <div class="card__form">
@@ -26,13 +28,11 @@ export const createTaskTemplate = (task) => {
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn card__btn--archive ${archiveClass}">
               archive
             </button>
             <button
-              type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
-            >
+              type="button" class="card__btn card__btn--favorites ${favoriteClass}">
               favorites
             </button>
           </div>
