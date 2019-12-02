@@ -17,13 +17,15 @@ export const createTaskTemplate = (task) => {
   const {description, dueDate, repeatingDays, tags, color, isFavorite, isArchive} = task;
   const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
   const isDeadline = dueDate instanceof Date && dueDate < Date.now();
+  const isRepeat = Object.values(repeatingDays).includes(true);
   const tagsTemplate = createTagsTemplate(tags);
 
   const deadlineClass = isDeadline ? `card--deadline` : ``;
+  const repeatClass = isRepeat ? `card--repeat` : ``;
   const favoriteClass = isFavorite ? `card__btn--disabled` : ``;
   const archiveClass = isArchive ? `card__btn--disabled` : ``;
   return (
-    `<article class="card card--${color} ${deadlineClass}">
+    `<article class="card card--${color} ${deadlineClass} ${repeatClass}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">

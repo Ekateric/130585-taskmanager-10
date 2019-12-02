@@ -37,10 +37,10 @@ const getRandomDate = (daysBefore, daysAfter) => {
 };
 
 const getRandomRepeatingDays = () => {
-  const repeatingDays = Object.assign({}, MockRepeatingDays);
+  let repeatingDays = Object.assign({}, MockRepeatingDays);
 
   for (let day in repeatingDays) {
-    if ({}.hasOwnProperty.call(day, repeatingDays)) {
+    if ({}.hasOwnProperty.call(repeatingDays, day)) {
       repeatingDays[day] = Math.random() > 0.5;
     }
   }
