@@ -36,8 +36,8 @@ const getRandomDate = (daysBefore, daysAfter) => {
   return new Date(getRandomIntegerNumber(fromDate, toDate));
 };
 
-const getRandomRepeatingDays = () => {
-  let repeatingDays = Object.assign({}, MockRepeatingDays);
+const getRandomRepeatingDays = (days) => {
+  let repeatingDays = Object.assign({}, days);
 
   for (let day in repeatingDays) {
     if ({}.hasOwnProperty.call(repeatingDays, day)) {
@@ -48,12 +48,12 @@ const getRandomRepeatingDays = () => {
   return repeatingDays;
 };
 
-const getRandomTags = () => {
+const getRandomTags = (tagsFrom) => {
   const tagsCount = getRandomIntegerNumber(0, 3);
-  const mockTagsLength = MockTags.length;
+  const tagsLength = tagsFrom.length;
   let tags = new Array(tagsCount).fill(``);
 
-  tags = tags.map(() => MockTags[getRandomIntegerNumber(0, mockTagsLength - 1)]);
+  tags = tags.map(() => tagsFrom[getRandomIntegerNumber(0, tagsLength - 1)]);
 
   return new Set(tags);
 };
@@ -63,8 +63,8 @@ export const createTaskData = () => {
   return {
     description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
     dueDate,
-    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays(),
-    tags: getRandomTags(),
+    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays(MockRepeatingDays),
+    tags: getRandomTags(MockTags),
     color: Colors[getRandomIntegerNumber(0, Colors.length - 1)],
     isFavorite: Math.random() > 0.5,
     isArchive: Math.random() > 0.5
