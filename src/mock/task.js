@@ -1,4 +1,4 @@
-import { DAYS, COLORS, getRandomIntegerNumber} from "../helpers";
+import {DAYS, COLORS, getRandomIntegerNumber} from "../helpers";
 
 const MockDescriptions = [
   `Изучить теорию`,
@@ -51,7 +51,7 @@ export const createTaskData = () => {
   return {
     description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
     dueDate,
-    repeatingDays: dueDate ? getRandomRepeatingDays(DAYS, false) : getRandomRepeatingDays(DAYS,true),
+    repeatingDays: dueDate ? getRandomRepeatingDays(DAYS, false) : getRandomRepeatingDays(DAYS, true),
     tags: getRandomTags(MockTags),
     color: COLORS[getRandomIntegerNumber(0, COLORS.length - 1)],
     isFavorite: Math.random() > 0.5,
