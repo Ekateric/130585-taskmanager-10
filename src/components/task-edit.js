@@ -1,8 +1,8 @@
-import {COLORS, getCorrectTime} from "../helpers";
+import {DAYS, COLORS, getCorrectTime} from "../helpers";
 
-const createRepeatingDaysTemplate = (days) => {
-  return Object.entries(days)
-    .map(([day, isChecked]) => {
+const createRepeatingDaysTemplate = (days, repeatingDays) => {
+  return Array.from(days)
+    .map((day) => {
       return (
         `<input
           class="visually-hidden card__repeat-day-input"
@@ -10,7 +10,7 @@ const createRepeatingDaysTemplate = (days) => {
           id="repeat-${day}-4"
           name="repeat"
           value="${day}"
-          ${isChecked ? `checked` : ``}
+          ${repeatingDays[day] ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${day}-4"
           >${day}</label
@@ -69,7 +69,7 @@ export const createTaskEditTemplate = (task) => {
   const isDeadline = dueDate instanceof Date && dueDate < Date.now();
   const isRepeat = Object.values(repeatingDays).includes(true);
   const tagsTemplate = createTagsTemplate(tags);
-  const repeatingDaysTemplate = createRepeatingDaysTemplate(repeatingDays);
+  const repeatingDaysTemplate = createRepeatingDaysTemplate(DAYS, repeatingDays);
   const colorsTemplate = createColorsTemplate(COLORS, color);
 
   const deadlineClass = isDeadline ? `card--deadline` : ``;

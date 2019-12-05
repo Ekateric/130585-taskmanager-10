@@ -1,20 +1,10 @@
-import {getRandomIntegerNumber, COLORS} from "../helpers";
+import { DAYS, COLORS, getRandomIntegerNumber} from "../helpers";
 
 const MockDescriptions = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`
 ];
-
-const MockRepeatingDays = {
-  mo: false,
-  tu: false,
-  we: false,
-  th: false,
-  fr: false,
-  sa: false,
-  su: false
-};
 
 const MockTags = [
   `homework`,
@@ -36,14 +26,12 @@ const getRandomDate = (daysBefore, daysAfter) => {
   return new Date(getRandomIntegerNumber(fromDate, toDate));
 };
 
-const getRandomRepeatingDays = (days) => {
-  let repeatingDays = Object.assign({}, days);
+const getRandomRepeatingDays = (days, isRepeating) => {
+  let repeatingDays = {};
 
-  for (let day in repeatingDays) {
-    if ({}.hasOwnProperty.call(repeatingDays, day)) {
-      repeatingDays[day] = Math.random() > 0.5;
-    }
-  }
+  days.forEach((day) => {
+    repeatingDays[day] = isRepeating ? Math.random() > 0.5 : false;
+  });
 
   return repeatingDays;
 };
@@ -63,7 +51,7 @@ export const createTaskData = () => {
   return {
     description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
     dueDate,
-    repeatingDays: dueDate ? MockRepeatingDays : getRandomRepeatingDays(MockRepeatingDays),
+    repeatingDays: dueDate ? getRandomRepeatingDays(DAYS, false) : getRandomRepeatingDays(DAYS,true),
     tags: getRandomTags(MockTags),
     color: COLORS[getRandomIntegerNumber(0, COLORS.length - 1)],
     isFavorite: Math.random() > 0.5,
