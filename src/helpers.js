@@ -1,5 +1,5 @@
 // Constants
-export const Months = [
+export const MONTHS = [
   `January`,
   `February`,
   `March`,
@@ -14,7 +14,7 @@ export const Months = [
   `December`
 ];
 
-export const Colors = [
+export const COLORS = [
   `black`,
   `yellow`,
   `blue`,
@@ -30,7 +30,7 @@ export const getCorrectTime = (date) => {
 
   return {
     day: date.getDate(),
-    month: Months[date.getMonth()],
+    month: MONTHS[date.getMonth()],
     time: `${hours % 12}:${date.getMinutes()} ${hours < 12 ? `AM` : `PM`}`
   };
 };
