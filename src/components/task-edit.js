@@ -1,4 +1,4 @@
-import {DAYS, COLORS, getCorrectTime} from "../helpers";
+import {DAYS, COLORS} from "../helpers";
 
 const createRepeatingDaysTemplate = (days, repeatingDays) => {
   return Array.from(days)
@@ -64,14 +64,12 @@ const createColorsTemplate = (colors, checkedColor) => {
 };
 
 export const createTaskEditTemplate = (task) => {
-  const {description, dueDate, repeatingDays, tags, color} = task;
-  const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
-  const isDeadline = dueDate instanceof Date && dueDate < Date.now();
-  const isRepeat = Object.values(repeatingDays).includes(true);
+  const {description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
+  const {day, month, time} = correctTime;
+
   const tagsTemplate = createTagsTemplate(tags);
   const repeatingDaysTemplate = createRepeatingDaysTemplate(DAYS, repeatingDays);
   const colorsTemplate = createColorsTemplate(COLORS, color);
-
   const deadlineClass = isDeadline ? `card--deadline` : ``;
   const repeatClass = isRepeat ? `card--repeat` : ``;
 
