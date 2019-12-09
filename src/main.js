@@ -2,7 +2,8 @@ import {createMenuTemplate} from "./components/menu";
 import {createFilterData} from "./mock/filters";
 import {createFiltersTemplate} from "./components/filter";
 import {createBoardTemplate} from "./components/board";
-import {createTasksData} from "./mock/tasks";
+import TasksMock from "./mock/tasks";
+import TasksListModel from "./models/tasks-list";
 import {createTaskTemplate} from "./components/task";
 import {createTaskEditTemplate} from "./components/task-edit";
 import {createButtonLoadMoreTemplate} from "./components/button-load-more";
@@ -11,8 +12,10 @@ import {getRandomIntegerNumber} from "./helpers";
 const TASK_COUNT = getRandomIntegerNumber(1, 20);
 const TASK_PER_PAGE = 8;
 
-const tasks = createTasksData(TASK_COUNT);
-const filters = createFilterData(tasks);
+const tasksMock = new TasksMock(TASK_COUNT);
+const tasksListModel = new TasksListModel(tasksMock.data);
+
+const filters = createFilterData(tasksListModel.tasks);
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
@@ -26,8 +29,8 @@ render(siteMainElement, createFiltersTemplate(filters));
 render(siteMainElement, createBoardTemplate());
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-render(taskListElement, createTaskEditTemplate(tasks[0]));
-tasks
+render(taskListElement, createTaskEditTemplate(tasksListModel.tasks[0]));
+tasksListModel.tasks
   .slice(1, TASK_PER_PAGE)
   .forEach((task) => render(taskListElement, createTaskTemplate(task)));
 
@@ -40,7 +43,7 @@ if (TASK_PER_PAGE < TASK_COUNT) {
 
   loadMoreButton.addEventListener(`click`, () => {
     const newShowingTasksCount = showingTasksCount + TASK_PER_PAGE;
-    tasks
+    tasksListModel.tasks
       .slice(showingTasksCount, newShowingTasksCount)
       .forEach((task) => render(taskListElement, createTaskTemplate(task)));
 
