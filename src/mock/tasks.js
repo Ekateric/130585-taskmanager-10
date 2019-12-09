@@ -1,4 +1,4 @@
-import {DAYS, COLORS, getRandomIntegerNumber} from "../helpers";
+import {DAYS, COLORS, getRandomInt} from "../helpers";
 
 const MockDescriptions = [
   `Изучить теорию`,
@@ -28,7 +28,7 @@ export default class TasksMock {
     fromDate = fromDate.getTime();
     toDate = toDate.getTime();
 
-    return new Date(getRandomIntegerNumber(fromDate, toDate));
+    return new Date(getRandomInt(fromDate, toDate));
   }
 
   _getRandomRepeatingDays(days, isRepeating) {
@@ -42,11 +42,11 @@ export default class TasksMock {
   }
 
   _getRandomTags(tagsFrom) {
-    const tagsCount = getRandomIntegerNumber(0, 3);
+    const tagsCount = getRandomInt(0, 3);
     const tagsLength = tagsFrom.length;
     let tags = new Array(tagsCount).fill(``);
 
-    tags = tags.map(() => tagsFrom[getRandomIntegerNumber(0, tagsLength - 1)]);
+    tags = tags.map(() => tagsFrom[getRandomInt(0, tagsLength - 1)]);
 
     return new Set(tags);
   }
@@ -54,11 +54,11 @@ export default class TasksMock {
   createTaskData() {
     const dueDate = Math.random() > 0.5 ? this._getRandomDate(-7, 7) : null;
     return {
-      description: MockDescriptions[getRandomIntegerNumber(0, MockDescriptions.length - 1)],
+      description: MockDescriptions[getRandomInt(0, MockDescriptions.length - 1)],
       dueDate,
       repeatingDays: dueDate ? this._getRandomRepeatingDays(DAYS, false) : this._getRandomRepeatingDays(DAYS, true),
       tags: this._getRandomTags(MockTags),
-      color: COLORS[getRandomIntegerNumber(0, COLORS.length - 1)],
+      color: COLORS[getRandomInt(0, COLORS.length - 1)],
       isFavorite: Math.random() > 0.5,
       isArchive: Math.random() > 0.5
     };

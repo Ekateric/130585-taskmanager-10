@@ -7,9 +7,9 @@ import TasksListModel from "./models/tasks-list";
 import {createTaskTemplate} from "./components/task";
 import {createTaskEditTemplate} from "./components/task-edit";
 import {createButtonLoadMoreTemplate} from "./components/button-load-more";
-import {getRandomIntegerNumber} from "./helpers";
+import {getRandomInt, render, createElement, RenderPosition} from "./helpers";
 
-const TASK_COUNT = getRandomIntegerNumber(1, 20);
+const TASK_COUNT = getRandomInt(1, 20);
 const TASK_PER_PAGE = 8;
 
 const tasksMock = new TasksMock(TASK_COUNT);
@@ -17,26 +17,22 @@ const tasksListModel = new TasksListModel(tasksMock.data);
 
 const filters = createFilterData(tasksListModel.tasks);
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-render(siteHeaderElement, createMenuTemplate());
-render(siteMainElement, createFiltersTemplate(filters));
-render(siteMainElement, createBoardTemplate());
+render(siteHeaderElement, createElement(createMenuTemplate()));
+render(siteMainElement, createElement(createFiltersTemplate(filters)));
+render(siteMainElement, createElement(createBoardTemplate()));
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-render(taskListElement, createTaskEditTemplate(tasksListModel.tasks[0]));
+render(taskListElement, createElement(createTaskEditTemplate(tasksListModel.tasks[0])));
 tasksListModel.tasks
   .slice(1, TASK_PER_PAGE)
-  .forEach((task) => render(taskListElement, createTaskTemplate(task)));
+  .forEach((task) => render(taskListElement, createElement(createTaskTemplate(task))));
 
 if (TASK_PER_PAGE < TASK_COUNT) {
   const boardElement = siteMainElement.querySelector(`.board`);
-  render(boardElement, createButtonLoadMoreTemplate());
+  render(boardElement, createElement(createButtonLoadMoreTemplate()));
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
   let showingTasksCount = TASK_PER_PAGE;
@@ -45,7 +41,7 @@ if (TASK_PER_PAGE < TASK_COUNT) {
     const newShowingTasksCount = showingTasksCount + TASK_PER_PAGE;
     tasksListModel.tasks
       .slice(showingTasksCount, newShowingTasksCount)
-      .forEach((task) => render(taskListElement, createTaskTemplate(task)));
+      .forEach((task) => render(taskListElement, createElement(createTaskTemplate(task))));
 
     showingTasksCount = newShowingTasksCount;
 
