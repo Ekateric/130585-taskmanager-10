@@ -1,4 +1,4 @@
-import {DAYS, COLORS} from "../helpers";
+import {DAYS, COLORS, createElement} from "../helpers";
 
 const createRepeatingDaysTemplate = (days, repeatingDays) => {
   return Array.from(days)
@@ -63,7 +63,7 @@ const createColorsTemplate = (colors, checkedColor) => {
     }).join(`\n`);
 };
 
-export const createTaskEditTemplate = (task) => {
+const createTaskFormTemplate = (task) => {
   const {description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
   const {day, month, time} = correctTime;
 
@@ -156,3 +156,28 @@ export const createTaskEditTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskFormView {
+  constructor(task) {
+    this._task = task;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskFormTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
