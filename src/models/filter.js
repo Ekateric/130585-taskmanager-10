@@ -1,6 +1,6 @@
 export default class FilterModel {
   constructor(title, data) {
-    this.title = title;
+    this._title = title;
     this._filterData = data;
     this.count = this.countFilterValue(this.title);
   }
@@ -30,5 +30,9 @@ export default class FilterModel {
       default:
         return 0;
     }
+  }
+
+  get title() {
+    return this._title;
   }
 }
