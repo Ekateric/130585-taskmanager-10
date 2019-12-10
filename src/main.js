@@ -32,23 +32,28 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 render(siteHeaderElement, new MenuView(menuItems).getElement());
 render(siteMainElement, new FiltersView(filters).getElement());
-render(siteMainElement, new BoardView().getElement());
 
-const taskListElement = siteMainElement.querySelector(`.board__tasks`);
+const boardView = new BoardView();
+const boardElement = boardView.getElement();
+render(siteMainElement, boardElement);
+
+const taskListElement = boardElement.querySelector(`.board__tasks`);
 render(taskListElement, new TaskFormView(tasks[0]).getElement());
 tasks
   .slice(1, TASK_PER_PAGE)
   .forEach((task) => render(taskListElement, new TaskView(task).getElement()));
 
 if (TASK_PER_PAGE < TASK_COUNT) {
-  const boardElement = siteMainElement.querySelector(`.board`);
-  render(boardElement, new ButtonLoadMoreView().getElement());
+  const buttonLoadMoreView = new ButtonLoadMoreView();
+  const buttonLoadMoreElement = buttonLoadMoreView.getElement();
 
-  const loadMoreButton = boardElement.querySelector(`.load-more`);
+  render(boardElement, buttonLoadMoreElement);
+
   let showingTasksCount = TASK_PER_PAGE;
 
-  loadMoreButton.addEventListener(`click`, () => {
+  buttonLoadMoreElement.addEventListener(`click`, () => {
     const newShowingTasksCount = showingTasksCount + TASK_PER_PAGE;
+
     tasks
       .slice(showingTasksCount, newShowingTasksCount)
       .forEach((task) => render(taskListElement, new TaskView(task).getElement()));
@@ -56,7 +61,8 @@ if (TASK_PER_PAGE < TASK_COUNT) {
     showingTasksCount = newShowingTasksCount;
 
     if (showingTasksCount >= TASK_COUNT) {
-      loadMoreButton.remove();
+      buttonLoadMoreElement.remove();
+      buttonLoadMoreView.removeElement();
     }
   });
 }
