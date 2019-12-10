@@ -22,4 +22,8 @@ export default class ButtonLoadMoreView {
   removeElement() {
     this._element = null;
   }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
