@@ -1,4 +1,7 @@
 import {createMenuTemplate} from "./components/menu";
+import {Menu} from "./mock/menu";
+import MenuModel from "./models/menu";
+import MenuView from "./components/menu";
 import {Filters} from "./mock/filters";
 import FiltersListModel from "./models/filters-list";
 import FiltersView from "./components/filters";
@@ -16,13 +19,18 @@ const TASK_PER_PAGE = 8;
 const tasksMock = new TasksMock(TASK_COUNT);
 const tasksListModel = new TasksListModel(tasksMock.data);
 const tasks = tasksListModel.tasks;
+
+const menuModel = new MenuModel(Menu);
+const menuItems = menuModel.items;
+menuModel.checked = `task`;
+
 const filtersModel = new FiltersListModel(Filters, tasks);
 const filters = filtersModel.filters;
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-render(siteHeaderElement, createElement(createMenuTemplate()));
+render(siteHeaderElement, new MenuView(menuItems).getElement());
 render(siteMainElement, new FiltersView(filters).getElement());
 render(siteMainElement, new BoardView().getElement());
 
