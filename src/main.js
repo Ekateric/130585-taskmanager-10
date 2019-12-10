@@ -1,5 +1,6 @@
 import {createMenuTemplate} from "./components/menu";
-import {createFilterData} from "./mock/filters";
+import {Filters} from "./mock/filters";
+import FiltersListModel from "./models/filters-list";
 import FiltersView from "./components/filters";
 import BoardView from "./components/board";
 import TasksMock from "./mock/tasks";
@@ -7,7 +8,7 @@ import TasksListModel from "./models/tasks-list";
 import TaskView from "./components/task";
 import TaskFormView from "./components/task-form";
 import {createButtonLoadMoreTemplate} from "./components/button-load-more";
-import {getRandomInt, render, createElement, RenderPosition} from "./helpers";
+import {getRandomInt, render, createElement} from "./helpers";
 
 const TASK_COUNT = getRandomInt(1, 20);
 const TASK_PER_PAGE = 8;
@@ -15,8 +16,8 @@ const TASK_PER_PAGE = 8;
 const tasksMock = new TasksMock(TASK_COUNT);
 const tasksListModel = new TasksListModel(tasksMock.data);
 const tasks = tasksListModel.tasks;
-
-const filters = createFilterData(tasksListModel.tasks);
+const filtersModel = new FiltersListModel(Filters, tasks);
+const filters = filtersModel.filters;
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
