@@ -1,4 +1,3 @@
-import {createMenuTemplate} from "./components/menu";
 import {Menu} from "./mock/menu";
 import MenuModel from "./models/menu";
 import MenuView from "./components/menu";

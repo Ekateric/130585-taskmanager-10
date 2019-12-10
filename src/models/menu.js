@@ -20,7 +20,6 @@ export default class MenuModel {
     }
     this.checkedId = id;
     this._items.find((item) => item.id === id).checked = true;
-    console.log(this.items);
   }
 }
 
