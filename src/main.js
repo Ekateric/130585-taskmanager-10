@@ -1,6 +1,6 @@
 import {createMenuTemplate} from "./components/menu";
 import {createFilterData} from "./mock/filters";
-import {createFiltersTemplate} from "./components/filter";
+import FiltersView from "./components/filters";
 import BoardView from "./components/board";
 import TasksMock from "./mock/tasks";
 import TasksListModel from "./models/tasks-list";
@@ -22,7 +22,7 @@ const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 render(siteHeaderElement, createElement(createMenuTemplate()));
-render(siteMainElement, createElement(createFiltersTemplate(filters)));
+render(siteMainElement, new FiltersView(filters).getElement());
 render(siteMainElement, new BoardView().getElement());
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
