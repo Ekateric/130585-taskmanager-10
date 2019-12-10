@@ -4,7 +4,7 @@ import {createFiltersTemplate} from "./components/filter";
 import {createBoardTemplate} from "./components/board";
 import TasksMock from "./mock/tasks";
 import TasksListModel from "./models/tasks-list";
-import {createTaskTemplate} from "./components/task";
+import TaskView from "./components/task";
 import {createTaskEditTemplate} from "./components/task-edit";
 import {createButtonLoadMoreTemplate} from "./components/button-load-more";
 import {getRandomInt, render, createElement, RenderPosition} from "./helpers";
@@ -28,7 +28,7 @@ const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 render(taskListElement, createElement(createTaskEditTemplate(tasksListModel.tasks[0])));
 tasksListModel.tasks
   .slice(1, TASK_PER_PAGE)
-  .forEach((task) => render(taskListElement, createElement(createTaskTemplate(task))));
+  .forEach((task) => render(taskListElement, new TaskView(task).getElement()));
 
 if (TASK_PER_PAGE < TASK_COUNT) {
   const boardElement = siteMainElement.querySelector(`.board`);
@@ -41,7 +41,7 @@ if (TASK_PER_PAGE < TASK_COUNT) {
     const newShowingTasksCount = showingTasksCount + TASK_PER_PAGE;
     tasksListModel.tasks
       .slice(showingTasksCount, newShowingTasksCount)
-      .forEach((task) => render(taskListElement, createElement(createTaskTemplate(task))));
+      .forEach((task) => render(taskListElement, new TaskView(task).getElement()));
 
     showingTasksCount = newShowingTasksCount;
 

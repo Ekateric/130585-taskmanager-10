@@ -1,3 +1,5 @@
+import {createElement} from "../helpers";
+
 const createTagsTemplate = (tags) => {
   return Array.from(tags)
     .map((tag) => {
@@ -11,7 +13,7 @@ const createTagsTemplate = (tags) => {
     }).join(`\n`);
 };
 
-export const createTaskTemplate = (task) => {
+const createTaskTemplate = (task) => {
   const {description, tags, color, correctTime, isFavorite, isArchive, isDeadline, isRepeat} = task;
   const {day, month, time} = correctTime;
 
@@ -70,3 +72,27 @@ export const createTaskTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskView {
+  constructor(task) {
+    this._task = task;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
