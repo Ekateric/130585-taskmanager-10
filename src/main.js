@@ -1,20 +1,16 @@
 import {Menu} from "./mock/menu";
 import {Filters} from "./mock/filters";
-import TasksMock from "./mock/tasks";
 import MenuModel from "./models/menu";
 import MenuView from "./views/menu";
 import FiltersListModel from "./models/filters-list";
 import FiltersView from "./views/filters";
 import TasksListModel from "./models/tasks-list";
 import BoardController from "./controllers/board";
-import getRandomInt from "./services/utils/getRandomInt";
 import render from "./services/utils/render";
 
-const TASK_COUNT = getRandomInt(1, 20);
 const TASK_PER_PAGE = 8;
 
-const tasksMock = new TasksMock(TASK_COUNT);
-const tasksListModel = new TasksListModel(tasksMock.data);
+const tasksListModel = new TasksListModel();
 const tasks = tasksListModel.tasks;
 
 const menuModel = new MenuModel(Menu);
@@ -30,6 +26,6 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 render(siteHeaderElement, new MenuView(menuItems).getElement());
 render(siteMainElement, new FiltersView(filters).getElement());
 
-const boardController = new BoardController(tasksListModel, TASK_PER_PAGE, TASK_COUNT);
+const boardController = new BoardController(tasksListModel, TASK_PER_PAGE);
 boardController.render(siteMainElement);
 

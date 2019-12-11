@@ -4,9 +4,9 @@ import ButtonLoadMoreView from "../views/button-load-more";
 import render from "../services/utils/render";
 
 export default class BoardController {
-  constructor(tasksListModel, tasksPerPage, tasksCount) {
+  constructor(tasksListModel, tasksPerPage) {
     this._tasksPerPage = tasksPerPage;
-    this._tasksCount = tasksCount;
+    this._tasksCount = tasksListModel.tasks.length;
     this._showingTasksCount = 0;
     this._view = new BoardView();
     this._element = this._view.getElement();

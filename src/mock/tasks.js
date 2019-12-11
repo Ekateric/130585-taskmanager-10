@@ -17,8 +17,9 @@ const MockTags = [
 ];
 
 export default class TasksMock {
-  constructor(tasksCount) {
-    this._data = this.createTasksData(tasksCount);
+  constructor() {
+    this._tasksCount = getRandomInt(1, 20);
+    this._data = this.createTasksData(this._tasksCount);
   }
 
   _getRandomDate(daysBefore, daysAfter) {
@@ -53,9 +54,10 @@ export default class TasksMock {
     return new Set(tags);
   }
 
-  createTaskData() {
+  createTaskData(index) {
     const dueDate = Math.random() > 0.5 ? this._getRandomDate(-7, 7) : null;
     return {
+      id: index,
       description: MockDescriptions[getRandomInt(0, MockDescriptions.length - 1)],
       dueDate,
       repeatingDays: dueDate ? this._getRandomRepeatingDays(DAYS, false) : this._getRandomRepeatingDays(DAYS, true),
@@ -69,7 +71,11 @@ export default class TasksMock {
   createTasksData(tasksCount) {
     return new Array(tasksCount)
       .fill(``)
-      .map(() => this.createTaskData());
+      .map((el, index) => this.createTaskData(index));
+  }
+
+  getTaskById(id) {
+    return this._data.find((el) => el.id === id);
   }
 
   get data() {
