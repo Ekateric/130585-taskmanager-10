@@ -1,5 +1,5 @@
-import TaskView from "../components/task";
-import render from "../utils/render";
+import TaskView from "../views/task";
+import render from "../services/utils/render";
 
 export default class TasksListController {
   constructor(tasksListModel, tasksListElement) {

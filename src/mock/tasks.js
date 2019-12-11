@@ -1,6 +1,6 @@
-import getRandomInt from "../utils/getRandomInt";
-import {DAYS} from "../const/days";
-import {COLORS} from "../const/colors";
+import getRandomInt from "../services/utils/getRandomInt";
+import {DAYS} from "../services/const/days";
+import {COLORS} from "../services/const/colors";
 
 const MockDescriptions = [
   `Изучить теорию`,

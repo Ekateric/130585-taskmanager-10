@@ -2,13 +2,13 @@ import {Menu} from "./mock/menu";
 import {Filters} from "./mock/filters";
 import TasksMock from "./mock/tasks";
 import MenuModel from "./models/menu";
-import MenuView from "./components/menu";
+import MenuView from "./views/menu";
 import FiltersListModel from "./models/filters-list";
-import FiltersView from "./components/filters";
+import FiltersView from "./views/filters";
 import TasksListModel from "./models/tasks-list";
 import BoardController from "./controllers/board";
-import getRandomInt from "./utils/getRandomInt";
-import render from "./utils/render";
+import getRandomInt from "./services/utils/getRandomInt";
+import render from "./services/utils/render";
 
 const TASK_COUNT = getRandomInt(1, 20);
 const TASK_PER_PAGE = 8;

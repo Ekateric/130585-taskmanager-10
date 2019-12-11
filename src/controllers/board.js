@@ -1,7 +1,7 @@
-import BoardView from "../components/board";
+import BoardView from "../views/board";
 import TasksListController from "./tasks-list";
-import ButtonLoadMoreView from "../components/button-load-more";
-import render from "../utils/render";
+import ButtonLoadMoreView from "../views/button-load-more";
+import render from "../services/utils/render";
 
 export default class BoardController {
   constructor(tasksListModel, tasksPerPage, tasksCount) {
