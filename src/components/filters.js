@@ -1,4 +1,4 @@
-import {createElement} from "../helpers";
+import createElement from "../utils/createElement";
 
 const createFilterTemplate = (filter) => {
   const {title, count} = filter;

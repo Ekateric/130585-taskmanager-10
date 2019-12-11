@@ -1,4 +1,4 @@
-import {createElement} from "../helpers";
+import createElement from "../utils/createElement";
 
 const createTagsTemplate = (tags) => {
   return Array.from(tags)

@@ -7,7 +7,8 @@ import FiltersListModel from "./models/filters-list";
 import FiltersView from "./components/filters";
 import TasksListModel from "./models/tasks-list";
 import BoardController from "./controllers/board";
-import {getRandomInt, render} from "./helpers";
+import getRandomInt from "./utils/getRandomInt";
+import render from "./utils/render";
 
 const TASK_COUNT = getRandomInt(1, 20);
 const TASK_PER_PAGE = 8;

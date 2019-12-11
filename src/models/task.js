@@ -1,4 +1,4 @@
-import {getCorrectTime} from "../helpers";
+import getCorrectTime from "../utils/getCorrectTime";
 
 export default class TaskModel {
   constructor(data) {

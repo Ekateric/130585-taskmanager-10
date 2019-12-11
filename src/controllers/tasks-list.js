@@ -1,5 +1,5 @@
 import TaskView from "../components/task";
-import {render} from "../helpers";
+import render from "../utils/render";
 
 export default class TasksListController {
   constructor(tasksListModel, tasksListElement) {
