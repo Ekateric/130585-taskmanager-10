@@ -1,5 +1,3 @@
-import render from "../services/utils/render";
-
 export default class TasksListController {
   constructor(tasksListModel, tasksListElement) {
     this._element = tasksListElement;
