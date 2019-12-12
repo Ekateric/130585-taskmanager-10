@@ -166,6 +166,12 @@ export default class TaskFormView {
     this._element = null;
   }
 
+  setSubmitFormHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__form`)
+      .addEventListener(`submit`, handler);
+  }
+
   getTemplate() {
     return createTaskFormTemplate(this._task);
   }

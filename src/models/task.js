@@ -2,6 +2,7 @@ import getCorrectTime from "../services/utils/getCorrectTime";
 
 export default class TaskModel {
   constructor(data) {
+    this.id = data.id;
     this.description = data.description;
     this.dueDate = data.dueDate;
     this.repeatingDays = data.repeatingDays;

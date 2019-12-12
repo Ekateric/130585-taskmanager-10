@@ -10,6 +10,6 @@ export default class TasksListController {
   render(fromTaskIndex, toTaskIndex) {
     this._tasksControllers
       .slice(fromTaskIndex, toTaskIndex)
-      .forEach((task) => render(this._element, task.element));
+      .forEach((task) => task.render(this._element));
   }
 }

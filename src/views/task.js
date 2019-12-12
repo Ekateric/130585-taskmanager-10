@@ -80,6 +80,12 @@ export default class TaskView {
     this._element = null;
   }
 
+  setClickEditButtonHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, handler);
+  }
+
   getTemplate() {
     return createTaskTemplate(this._task);
   }
