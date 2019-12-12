@@ -1,20 +1,15 @@
-import TaskView from "../views/task";
 import render from "../services/utils/render";
 
 export default class TasksListController {
   constructor(tasksListModel, tasksListElement) {
-    this._tasksListElement = tasksListElement;
-    this._tasksModel = tasksListModel;
-    this._tasks = this._tasksModel.tasks;
+    this._element = tasksListElement;
+    this._tasksListModel = tasksListModel;
+    this._tasksControllers = this._tasksListModel.tasksControllers;
   }
 
   render(fromTaskIndex, toTaskIndex) {
-    this._tasks
+    this._tasksControllers
       .slice(fromTaskIndex, toTaskIndex)
-      .forEach((task) => render(this._tasksListElement, new TaskView(task).getElement()));
-  }
-
-  get tasks() {
-    return this._tasks;
+      .forEach((task) => render(this._element, task.element));
   }
 }
