@@ -1,4 +1,6 @@
-import {DAYS, COLORS, getCorrectTime} from "../helpers";
+import createElement from "../services/utils/createElement";
+import DAYS from "../services/const/days";
+import COLORS from "../services/const/colors";
 
 const createRepeatingDaysTemplate = (days, repeatingDays) => {
   return Array.from(days)
@@ -63,15 +65,13 @@ const createColorsTemplate = (colors, checkedColor) => {
     }).join(`\n`);
 };
 
-export const createTaskEditTemplate = (task) => {
-  const {description, dueDate, repeatingDays, tags, color} = task;
-  const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
-  const isDeadline = dueDate instanceof Date && dueDate < Date.now();
-  const isRepeat = Object.values(repeatingDays).includes(true);
+const createTaskFormTemplate = (task) => {
+  const {description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
+  const {day, month, time} = correctTime;
+
   const tagsTemplate = createTagsTemplate(tags);
   const repeatingDaysTemplate = createRepeatingDaysTemplate(DAYS, repeatingDays);
   const colorsTemplate = createColorsTemplate(COLORS, color);
-
   const deadlineClass = isDeadline ? `card--deadline` : ``;
   const repeatClass = isRepeat ? `card--repeat` : ``;
 
@@ -158,3 +158,34 @@ export const createTaskEditTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskFormView {
+  constructor(task) {
+    this._task = task;
+
+    this._element = null;
+  }
+
+  setSubmitFormHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__form`)
+      .addEventListener(`submit`, handler);
+  }
+
+  getTemplate() {
+    return createTaskFormTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

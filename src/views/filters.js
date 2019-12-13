@@ -1,3 +1,5 @@
+import createElement from "../services/utils/createElement";
+
 const createFilterTemplate = (filter) => {
   const {title, count} = filter;
 
@@ -17,7 +19,7 @@ const createFilterTemplate = (filter) => {
   );
 };
 
-export const createFiltersTemplate = (filters) => {
+const createFiltersTemplate = (filters) => {
   const filtersTemplate = filters.map((filter) => createFilterTemplate(filter)).join(`\n`);
   return (
     `<section class="main__filter filter container">
@@ -25,3 +27,26 @@ export const createFiltersTemplate = (filters) => {
     </section>`
   );
 };
+
+export default class FiltersView {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFiltersTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,4 +1,4 @@
-import {getCorrectTime} from "../helpers";
+import createElement from "../services/utils/createElement";
 
 const createTagsTemplate = (tags) => {
   return Array.from(tags)
@@ -13,13 +13,11 @@ const createTagsTemplate = (tags) => {
     }).join(`\n`);
 };
 
-export const createTaskTemplate = (task) => {
-  const {description, dueDate, repeatingDays, tags, color, isFavorite, isArchive} = task;
-  const {day, month, time} = dueDate ? getCorrectTime(dueDate) : {day: ``, month: ``, time: ``};
-  const isDeadline = dueDate instanceof Date && dueDate < Date.now();
-  const isRepeat = Object.values(repeatingDays).includes(true);
-  const tagsTemplate = createTagsTemplate(tags);
+const createTaskTemplate = (task) => {
+  const {description, tags, color, correctTime, isFavorite, isArchive, isDeadline, isRepeat} = task;
+  const {day, month, time} = correctTime;
 
+  const tagsTemplate = createTagsTemplate(tags);
   const deadlineClass = isDeadline ? `card--deadline` : ``;
   const repeatClass = isRepeat ? `card--repeat` : ``;
   const favoriteClass = isFavorite ? `card__btn--disabled` : ``;
@@ -74,3 +72,33 @@ export const createTaskTemplate = (task) => {
     </article>`
   );
 };
+
+export default class TaskView {
+  constructor(task) {
+    this._task = task;
+
+    this._element = null;
+  }
+
+  setClickEditButtonHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, handler);
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
