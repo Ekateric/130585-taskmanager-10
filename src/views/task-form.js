@@ -1,6 +1,6 @@
-import createElement from "../services/utils/createElement";
-import DAYS from "../services/const/days";
-import COLORS from "../services/const/colors";
+import createElement from "../utils/createElement";
+import DAYS from "../data/days";
+import COLORS from "../data/colors";
 
 const createRepeatingDaysTemplate = (days, repeatingDays) => {
   return Array.from(days)

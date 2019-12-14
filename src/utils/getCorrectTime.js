@@ -1,4 +1,4 @@
-import MONTHS from "../const/months";
+import MONTHS from "../data/months";
 
 export default (date) => {
   const hours = date.getHours();

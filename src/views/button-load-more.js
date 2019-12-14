@@ -1,4 +1,4 @@
-import createElement from "../services/utils/createElement";
+import createElement from "../utils/createElement";
 
 const createButtonLoadMoreTemplate = () => `<button class="load-more" type="button">load more</button>`;
 

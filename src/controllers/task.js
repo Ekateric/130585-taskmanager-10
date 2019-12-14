@@ -1,6 +1,6 @@
 import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
-import render from "../services/utils/render";
+import render from "../utils/render";
 
 export default class TaskController {
   constructor(taskModel) {
