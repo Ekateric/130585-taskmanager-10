@@ -18,4 +18,12 @@ export default class TasksListController {
   render(renderToElement) {
     render(renderToElement, this._element);
   }
+
+  get isAllArchived() {
+    return this._tasksListModel.isAllArchived;
+  }
+
+  get isEmpty() {
+    return this._tasksListModel.isEmpty;
+  }
 }

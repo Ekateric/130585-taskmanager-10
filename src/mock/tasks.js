@@ -18,7 +18,7 @@ const MockTags = [
 
 export default class TasksMock {
   constructor() {
-    this._tasksCount = getRandomInt(1, 20);
+    this._tasksCount = getRandomInt(0, 20);
     this._data = this.createTasksData(this._tasksCount);
   }
 
