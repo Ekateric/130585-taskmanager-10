@@ -1,14 +1,14 @@
 import createElement from "../utils/createElement";
 
-const createBoardTemplate = () => `<section class="board container"></section>`;
+const createTasksListTemplate = () => `<div class="board__tasks"></div>`;
 
-export default class BoardView {
+export default class TasksListView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createBoardTemplate();
+    return createTasksListTemplate();
   }
 
   getElement() {
