@@ -1,6 +1,6 @@
-import getRandomInt from "../services/utils/getRandomInt";
-import DAYS from "../services/const/days";
-import COLORS from "../services/const/colors";
+import getRandomInt from "../utils/getRandomInt";
+import DAYS from "../data/days";
+import COLORS from "../data/colors";
 
 const MockDescriptions = [
   `Изучить теорию`,
@@ -18,7 +18,7 @@ const MockTags = [
 
 export default class TasksMock {
   constructor() {
-    this._tasksCount = getRandomInt(1, 20);
+    this._tasksCount = getRandomInt(0, 20);
     this._data = this.createTasksData(this._tasksCount);
   }
 

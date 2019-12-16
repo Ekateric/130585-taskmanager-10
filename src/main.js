@@ -6,7 +6,7 @@ import FiltersListModel from "./models/filters-list";
 import FiltersView from "./views/filters";
 import TasksListModel from "./models/tasks-list";
 import BoardController from "./controllers/board";
-import render from "./services/utils/render";
+import render from "./utils/render";
 
 const TASK_PER_PAGE = 8;
 

@@ -1,14 +1,14 @@
 import createElement from "../utils/createElement";
 
-const createButtonLoadMoreTemplate = () => `<button class="load-more" type="button">load more</button>`;
+const createTasksListTemplate = () => `<div class="board__tasks"></div>`;
 
-export default class ButtonLoadMoreView {
+export default class TasksListView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createButtonLoadMoreTemplate();
+    return createTasksListTemplate();
   }
 
   getElement() {
@@ -21,9 +21,5 @@ export default class ButtonLoadMoreView {
 
   removeElement() {
     this._element = null;
-  }
-
-  setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
   }
 }

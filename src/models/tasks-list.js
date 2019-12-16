@@ -7,10 +7,20 @@ export default class TasksListModel {
   constructor() {
     this._mock = new TasksMock();
     this._tasks = this._createTasks(this.getAllTasks());
+    this._isAllArchived = this._checkIsAllArchived();
+    this._isEmpty = this._checkIsEmpty();
   }
 
   _createTasks(data) {
     return data.map((task) => new TaskController(new TaskModel(task)));
+  }
+
+  _checkIsAllArchived() {
+    return this._tasks.every((taskController) => taskController.model.isArchive);
+  }
+
+  _checkIsEmpty() {
+    return this._tasks.length === 0;
   }
 
   getAllTasks() {
@@ -27,5 +37,13 @@ export default class TasksListModel {
 
   get tasksModels() {
     return this._tasks.map((task) => task.model);
+  }
+
+  get isAllArchived() {
+    return this._isAllArchived;
+  }
+
+  get isEmpty() {
+    return this._isEmpty;
   }
 }

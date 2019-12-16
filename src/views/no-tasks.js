@@ -1,14 +1,20 @@
 import createElement from "../utils/createElement";
 
-const createButtonLoadMoreTemplate = () => `<button class="load-more" type="button">load more</button>`;
+const createNoTasksTemplate = () => {
+  return (
+    `<p class="board__no-tasks">
+      Click «ADD NEW TASK» in menu to create your first task
+    </p>`
+  );
+};
 
-export default class ButtonLoadMoreView {
+export default class NoTasksView {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createButtonLoadMoreTemplate();
+    return createNoTasksTemplate();
   }
 
   getElement() {
@@ -21,9 +27,5 @@ export default class ButtonLoadMoreView {
 
   removeElement() {
     this._element = null;
-  }
-
-  setClickHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
   }
 }
