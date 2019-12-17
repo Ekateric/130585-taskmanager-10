@@ -1,4 +1,4 @@
-import createElement from "../utils/createElement";
+import AbstractView from "./abstract";
 
 const createTagsTemplate = (tags) => {
   return Array.from(tags)
@@ -73,32 +73,20 @@ const createTaskTemplate = (task) => {
   );
 };
 
-export default class TaskView {
+export default class TaskView extends AbstractView {
   constructor(task) {
+    super();
+
     this._task = task;
-
-    this._element = null;
-  }
-
-  setClickEditButtonHandler(handler) {
-    this.getElement()
-      .querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, handler);
   }
 
   getTemplate() {
     return createTaskTemplate(this._task);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickEditButtonHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, handler);
   }
 }
