@@ -1,7 +1,7 @@
 import {SortTypes} from "../mock/sort-types";
 import BoardView from "../views/board";
 import SortModel from "../models/sort";
-import SortView from "../views/sort";
+import SortController from "./sort";
 import TasksListController from "./tasks-list";
 import ButtonLoadMoreView from "../views/button-load-more";
 import NoTasksView from "../views/no-tasks";
@@ -19,15 +19,41 @@ export default class BoardController {
     this._element = this._view.getElement();
     this._listController = new TasksListController(this._tasksListModel, this._element);
     this._sortModel = null;
-    this._sortView = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
   }
 
+  _changeSortType() {
+    if (this._sortModel) {
+      this._listController.clear();
+
+      switch (this._sortModel.checked) {
+        case `default`:
+          this._listController.sortByDefault();
+          break;
+        case `date-up`:
+          this._listController.sortByDateUp();
+          break;
+        case `date-down`:
+          this._listController.sortByDateDown();
+          break;
+      }
+
+      this._showingTasksCount = 0;
+
+      if (this._tasksPerPage < this._tasksCount && !this._buttonLoadMoreView) {
+        this._buttonLoadMoreView = new ButtonLoadMoreView();
+        this._renderButtonLoadMore();
+      }
+
+      this.renderTasksPage();
+    }
+  }
+
   _renderSort() {
     this._sortModel = new SortModel(SortTypes);
-    this._sortView = new SortView(this._sortModel.items);
-    render(this._element, this._sortView);
+    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType.bind(this));
+    this._sortController.render();
   }
 
   _renderTasksList() {
@@ -55,6 +81,7 @@ export default class BoardController {
 
     if (this._showingTasksCount >= this._tasksCount && this._buttonLoadMoreView) {
       remove(this._buttonLoadMoreView);
+      this._buttonLoadMoreView = null;
     }
   }
 

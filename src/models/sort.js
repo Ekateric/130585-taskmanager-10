@@ -3,7 +3,7 @@ import SortItemModel from "./sort-item";
 export default class SortModel {
   constructor(data) {
     this._items = this._createItems(data);
-    this.checkedId = null;
+    this._checkedId = null;
   }
 
   _createItems(data) {
@@ -15,10 +15,14 @@ export default class SortModel {
   }
 
   set checked(id) {
-    if (this.checkedId && this.checkedId !== id) {
-      this._items.find((item) => item.id === this.checkedId).checked = false;
+    if (this._checkedId && this._checkedId !== id) {
+      this._items.find((item) => item.id === this._checkedId).checked = false;
     }
-    this.checkedId = id;
+    this._checkedId = id;
     this._items.find((item) => item.id === id).checked = true;
+  }
+
+  get checked() {
+    return this._checkedId;
   }
 }

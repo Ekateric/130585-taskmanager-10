@@ -23,9 +23,19 @@ export default class SortView extends AbstractView {
     super();
 
     this._items = items;
+    this._linksElements = this.getElement().querySelectorAll(`.board__filter`);
   }
 
   getTemplate() {
     return createSortTemplate(this._items);
+  }
+
+  setClickLinksHandler(handler) {
+    Array.from(this._linksElements).forEach((link) => {
+      link.addEventListener(`click`, function (event) {
+        event.preventDefault();
+        handler(event.target.dataset.sortType);
+      });
+    });
   }
 }
