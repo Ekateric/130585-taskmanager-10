@@ -1,4 +1,4 @@
-import createElement from "../utils/createElement";
+import AbstractView from "./abstract";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
 
@@ -159,11 +159,15 @@ const createTaskFormTemplate = (task) => {
   );
 };
 
-export default class TaskFormView {
+export default class TaskFormView extends AbstractView {
   constructor(task) {
-    this._task = task;
+    super();
 
-    this._element = null;
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskFormTemplate(this._task);
   }
 
   setSubmitFormHandler(handler) {
@@ -171,21 +175,4 @@ export default class TaskFormView {
       .querySelector(`.card__form`)
       .addEventListener(`submit`, handler);
   }
-
-  getTemplate() {
-    return createTaskFormTemplate(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
-
