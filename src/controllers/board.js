@@ -4,6 +4,7 @@ import TasksListController from "./tasks-list";
 import ButtonLoadMoreView from "../views/button-load-more";
 import NoTasksView from "../views/no-tasks";
 import render from "../utils/render";
+import remove from "../utils/remove";
 
 export default class BoardController {
   constructor(tasksListModel, tasksPerPage) {
@@ -46,8 +47,8 @@ export default class BoardController {
     this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
     this._showingTasksCount += this._tasksPerPage;
 
-    if (this._showingTasksCount >= this._tasksCount) {
-      this._buttonLoadMoreView.removeElement();
+    if (this._showingTasksCount >= this._tasksCount && this._buttonLoadMoreView) {
+      remove(this._buttonLoadMoreView);
     }
   }
 
