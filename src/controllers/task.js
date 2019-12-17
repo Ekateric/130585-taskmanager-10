@@ -21,7 +21,7 @@ export default class TaskController {
   }
 
   render(renderToElement) {
-    render(renderToElement, this._taskElement);
+    render(renderToElement, this._view);
     this._parentElement = renderToElement;
     this.setHandlers();
   }

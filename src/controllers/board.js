@@ -14,17 +14,13 @@ export default class BoardController {
     this._element = this._view.getElement();
     this._listController = new TasksListController(tasksListModel);
     this._sortView = null;
-    this._sortElement = null;
     this._buttonLoadMoreView = null;
-    this._buttonLoadMoreElement = null;
     this._noTasksView = null;
-    this._noTasksElement = null;
   }
 
   _renderSort() {
     this._sortView = new SortView();
-    this._sortElement = this._sortView.getElement();
-    render(this._element, this._sortElement);
+    render(this._element, this._sortView);
   }
 
   _renderTasksList() {
@@ -32,8 +28,8 @@ export default class BoardController {
   }
 
   _renderButtonLoadMore() {
-    if (this._buttonLoadMoreView && this._buttonLoadMoreElement) {
-      render(this._element, this._buttonLoadMoreElement);
+    if (this._buttonLoadMoreView) {
+      render(this._element, this._buttonLoadMoreView);
 
       this._buttonLoadMoreView.setClickHandler(() => {
         this.renderTasksPage();
@@ -43,22 +39,19 @@ export default class BoardController {
 
   _renderNoTasks() {
     this._noTasksView = new NoTasksView();
-    this._noTasksElement = this._noTasksView.getElement();
-    render(this._element, this._noTasksElement);
+    render(this._element, this._noTasksView);
   }
 
   renderTasksPage() {
     this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
     this._showingTasksCount += this._tasksPerPage;
 
-    if (this._showingTasksCount >= this._tasksCount && this._buttonLoadMoreElement) {
-      this._buttonLoadMoreElement.remove();
+    if (this._showingTasksCount >= this._tasksCount) {
       this._buttonLoadMoreView.removeElement();
     }
   }
 
   render(renderToElement) {
-
     if (this._listController.isAllArchived || this._listController.isEmpty) {
       this._renderNoTasks();
 
@@ -69,11 +62,10 @@ export default class BoardController {
 
       if (this._tasksPerPage < this._tasksCount) {
         this._buttonLoadMoreView = new ButtonLoadMoreView();
-        this._buttonLoadMoreElement = this._buttonLoadMoreView.getElement();
         this._renderButtonLoadMore();
       }
     }
 
-    render(renderToElement, this._element);
+    render(renderToElement, this._view);
   }
 }

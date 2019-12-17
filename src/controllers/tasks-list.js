@@ -16,7 +16,7 @@ export default class TasksListController {
   }
 
   render(renderToElement) {
-    render(renderToElement, this._element);
+    render(renderToElement, this._view);
   }
 
   get isAllArchived() {
