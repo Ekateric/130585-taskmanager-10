@@ -1,28 +1,25 @@
 import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
 import render from "../utils/render";
+import replace from "../utils/replace";
 
 export default class TaskController {
   constructor(taskModel) {
     this._model = taskModel;
     this._view = new TaskView(this._model);
-    this._taskElement = this._view.getElement();
     this._formView = new TaskFormView(this._model);
-    this._taskFormElement = this._formView.getElement();
-    this._parentElement = null;
   }
 
   _replaceViewToEdit() {
-    this._parentElement.replaceChild(this._taskFormElement, this._taskElement);
+    replace(this._formView, this._view);
   }
 
   _replaceEditToView() {
-    this._parentElement.replaceChild(this._taskElement, this._taskFormElement);
+    replace(this._view, this._formView);
   }
 
   render(renderToElement) {
     render(renderToElement, this._view);
-    this._parentElement = renderToElement;
     this.setHandlers();
   }
 
@@ -46,10 +43,6 @@ export default class TaskController {
     this._formView.setSubmitFormHandler(() => {
       this._replaceEditToView();
     });
-  }
-
-  get element() {
-    return this._taskElement;
   }
 
   get model() {
