@@ -7,13 +7,15 @@ import render from "../utils/render";
 import remove from "../utils/remove";
 
 export default class BoardController {
-  constructor(tasksListModel, tasksPerPage) {
+  constructor(tasksListModel, tasksPerPage, containerElement) {
+    this._tasksListModel = tasksListModel;
     this._tasksPerPage = tasksPerPage;
-    this._tasksCount = tasksListModel.tasksModels.length;
+    this._containerElement = containerElement;
+    this._tasksCount = this._tasksListModel.tasksModels.length;
     this._showingTasksCount = 0;
     this._view = new BoardView();
     this._element = this._view.getElement();
-    this._listController = new TasksListController(tasksListModel);
+    this._listController = new TasksListController(this._tasksListModel, this._element);
     this._sortView = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
@@ -25,7 +27,7 @@ export default class BoardController {
   }
 
   _renderTasksList() {
-    this._listController.render(this._element);
+    this._listController.render();
   }
 
   _renderButtonLoadMore() {
@@ -52,7 +54,7 @@ export default class BoardController {
     }
   }
 
-  render(renderToElement) {
+  render() {
     if (this._listController.isAllArchived || this._listController.isEmpty) {
       this._renderNoTasks();
 
@@ -67,6 +69,6 @@ export default class BoardController {
       }
     }
 
-    render(renderToElement, this._view);
+    render(this._containerElement, this._view);
   }
 }

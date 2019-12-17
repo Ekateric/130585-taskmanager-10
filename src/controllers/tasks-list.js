@@ -2,8 +2,9 @@ import TasksListView from "../views/tasks-list";
 import render from "../utils/render";
 
 export default class TasksListController {
-  constructor(tasksListModel) {
+  constructor(tasksListModel, containerElement) {
     this._tasksListModel = tasksListModel;
+    this._containerElement = containerElement;
     this._tasksControllers = this._tasksListModel.tasksControllers;
     this._view = new TasksListView();
     this._element = this._view.getElement();
@@ -15,8 +16,8 @@ export default class TasksListController {
       .forEach((task) => task.render(this._element));
   }
 
-  render(renderToElement) {
-    render(renderToElement, this._view);
+  render() {
+    render(this._containerElement, this._view);
   }
 
   get isAllArchived() {
