@@ -1,4 +1,6 @@
+import {SortTypes} from "../mock/sort-types";
 import BoardView from "../views/board";
+import SortModel from "../models/sort";
 import SortView from "../views/sort";
 import TasksListController from "./tasks-list";
 import ButtonLoadMoreView from "../views/button-load-more";
@@ -16,13 +18,15 @@ export default class BoardController {
     this._view = new BoardView();
     this._element = this._view.getElement();
     this._listController = new TasksListController(this._tasksListModel, this._element);
+    this._sortModel = null;
     this._sortView = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
   }
 
   _renderSort() {
-    this._sortView = new SortView();
+    this._sortModel = new SortModel(SortTypes);
+    this._sortView = new SortView(this._sortModel.items);
     render(this._element, this._sortView);
   }
 

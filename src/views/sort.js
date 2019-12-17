@@ -1,17 +1,31 @@
 import AbstractView from "./abstract";
 
-const createSortTemplate = () => {
+const createSortItemTemplate = (sortItem) => {
+  const {id, title} = sortItem;
+
+  return `<a href="#" data-sort-type="${id}" class="board__filter">${title}</a>`;
+};
+
+const createSortTemplate = (sortItems) => {
+  const sortItemsTemplate = sortItems
+    .map((item) => createSortItemTemplate(item))
+    .join(`\n`);
+
   return (
     `<div class="board__filter-list">
-        <a href="#" class="board__filter">SORT BY DEFAULT</a>
-        <a href="#" class="board__filter">SORT BY DATE up</a>
-        <a href="#" class="board__filter">SORT BY DATE down</a>
+        ${sortItemsTemplate}
       </div>`
   );
 };
 
 export default class SortView extends AbstractView {
+  constructor(items) {
+    super();
+
+    this._items = items;
+  }
+
   getTemplate() {
-    return createSortTemplate();
+    return createSortTemplate(this._items);
   }
 }
