@@ -1,25 +1,9 @@
-import createElement from "../utils/createElement";
+import AbstractView from "./abstract";
 
 const createBoardTemplate = () => `<section class="board container"></section>`;
 
-export default class BoardView {
-  constructor() {
-    this._element = null;
-  }
-
+export default class BoardView extends AbstractView {
   getTemplate() {
     return createBoardTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

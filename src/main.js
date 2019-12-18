@@ -23,9 +23,9 @@ const filters = filtersModel.filters;
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-render(siteHeaderElement, new MenuView(menuItems).getElement());
-render(siteMainElement, new FiltersView(filters).getElement());
+render(siteHeaderElement, new MenuView(menuItems));
+render(siteMainElement, new FiltersView(filters));
 
-const boardController = new BoardController(tasksListModel, TASK_PER_PAGE);
-boardController.render(siteMainElement);
+const boardController = new BoardController(tasksListModel, TASK_PER_PAGE, siteMainElement);
+boardController.render();
 

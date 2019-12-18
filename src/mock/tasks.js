@@ -34,11 +34,11 @@ export default class TasksMock {
     return new Date(getRandomInt(fromDate, toDate));
   }
 
-  _getRandomRepeatingDays(days, isRepeating) {
+  _getRandomRepeatingDays(days) {
     let repeatingDays = {};
 
     days.forEach((day) => {
-      repeatingDays[day] = isRepeating ? Math.random() > 0.5 : false;
+      repeatingDays[day] = Math.random() > 0.5;
     });
 
     return repeatingDays;
@@ -60,7 +60,7 @@ export default class TasksMock {
       id: index,
       description: MockDescriptions[getRandomInt(0, MockDescriptions.length - 1)],
       dueDate,
-      repeatingDays: dueDate ? this._getRandomRepeatingDays(DAYS, false) : this._getRandomRepeatingDays(DAYS, true),
+      repeatingDays: dueDate ? false : this._getRandomRepeatingDays(DAYS),
       tags: this._getRandomTags(MockTags),
       color: COLORS[getRandomInt(0, COLORS.length - 1)],
       isFavorite: Math.random() > 0.5,

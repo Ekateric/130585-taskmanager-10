@@ -1,33 +1,41 @@
-import createElement from "../utils/createElement";
+import AbstractView from "./abstract";
 
-const createSortTemplate = () => {
+const createSortItemTemplate = (sortItem) => {
+  const {id, title} = sortItem;
+
+  return `<a href="#" data-sort-type="${id}" class="board__filter">${title}</a>`;
+};
+
+const createSortTemplate = (sortItems) => {
+  const sortItemsTemplate = sortItems
+    .map((item) => createSortItemTemplate(item))
+    .join(`\n`);
+
   return (
     `<div class="board__filter-list">
-        <a href="#" class="board__filter">SORT BY DEFAULT</a>
-        <a href="#" class="board__filter">SORT BY DATE up</a>
-        <a href="#" class="board__filter">SORT BY DATE down</a>
+        ${sortItemsTemplate}
       </div>`
   );
 };
 
-export default class SortView {
-  constructor() {
-    this._element = null;
+export default class SortView extends AbstractView {
+  constructor(items) {
+    super();
+
+    this._items = items;
+    this._linksElements = this.getElement().querySelectorAll(`.board__filter`);
   }
 
   getTemplate() {
-    return createSortTemplate();
+    return createSortTemplate(this._items);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickLinksHandler(handler) {
+    Array.from(this._linksElements).forEach((link) => {
+      link.addEventListener(`click`, function (event) {
+        event.preventDefault();
+        handler(event.target.dataset.sortType);
+      });
+    });
   }
 }
