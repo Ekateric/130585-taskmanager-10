@@ -12,7 +12,7 @@ const createRepeatingDaysTemplate = (days, repeatingDays) => {
           id="repeat-${day}-4"
           name="repeat"
           value="${day}"
-          ${repeatingDays[day] ? `checked` : ``}
+          ${(repeatingDays && repeatingDays[day]) ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${day}-4"
           >${day}</label

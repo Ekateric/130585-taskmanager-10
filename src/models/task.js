@@ -12,6 +12,6 @@ export default class TaskModel {
     this.isArchive = data.isArchive;
     this.correctTime = this.dueDate ? getCorrectTime(this.dueDate) : {day: ``, month: ``, time: ``};
     this.isDeadline = this.dueDate instanceof Date && this.dueDate < Date.now();
-    this.isRepeat = Object.values(this.repeatingDays).includes(true);
+    this.isRepeat = !!this.repeatingDays;
   }
 }
