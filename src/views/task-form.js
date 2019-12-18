@@ -2,76 +2,71 @@ import AbstractView from "./abstract";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
 
-const createRepeatingDaysTemplate = (days, repeatingDays) => {
-  return Array.from(days)
-    .map((day) => {
-      return (
-        `<input
-          class="visually-hidden card__repeat-day-input"
-          type="checkbox"
-          id="repeat-${day}-4"
-          name="repeat"
-          value="${day}"
-          ${(repeatingDays && repeatingDays[day]) ? `checked` : ``}
-        />
-        <label class="card__repeat-day" for="repeat-${day}-4"
-          >${day}</label
-        >`
-      );
-    }).join(`\n`);
+const createRepeatingDayTemplate = (day, repeatingDays, id) => {
+  const isChecked = repeatingDays && repeatingDays[day];
+
+  return (
+    `<input
+      class="visually-hidden card__repeat-day-input"
+      type="checkbox"
+      id="repeat-${day}-${id}"
+      name="repeat"
+      value="${day}"
+      ${isChecked ? `checked` : ``}
+    />
+    <label class="card__repeat-day" for="repeat-${day}-${id}"
+      >${day}</label
+    >`
+  );
 };
 
-const createTagsTemplate = (tags) => {
-  return Array.from(tags)
-    .map((tag) => {
-      return (
-        `<span class="card__hashtag-inner">
-          <input
-            type="hidden"
-            name="hashtag"
-            value="${tag}"
-            class="card__hashtag-hidden-input"
-          />
-          <p class="card__hashtag-name">
-            #${tag}
-          </p>
-          <button type="button" class="card__hashtag-delete">
-            delete
-          </button>
-        </span>`
-      );
-    }).join(`\n`);
+const createTagTemplate = (tag) => {
+  return (
+    `<span class="card__hashtag-inner">
+      <input
+        type="hidden"
+        name="hashtag"
+        value="${tag}"
+        class="card__hashtag-hidden-input"
+      />
+      <p class="card__hashtag-name">
+        #${tag}
+      </p>
+      <button type="button" class="card__hashtag-delete">
+        delete
+      </button>
+    </span>`
+  );
 };
 
-const createColorsTemplate = (colors, checkedColor) => {
-  return Array.from(colors)
-    .map((color) => {
-      const isChecked = color === checkedColor;
-      return (
-        `<input
-          type="radio"
-          id="color-${color}-4"
-          class="card__color-input card__color-input--${color} visually-hidden"
-          name="color"
-          value="${color}"
-          ${isChecked ? `checked` : ``}
-        />
-        <label
-          for="color-${color}-4"
-          class="card__color card__color--${color}"
-          >${color}</label
-        >`
-      );
-    }).join(`\n`);
+const createColorTemplate = (color, checkedColor, id) => {
+  const isChecked = color === checkedColor;
+
+  return (
+    `<input
+      type="radio"
+      id="color-${color}-${id}"
+      class="card__color-input card__color-input--${color} visually-hidden"
+      name="color"
+      value="${color}"
+      ${isChecked ? `checked` : ``}
+    />
+    <label
+      for="color-${color}-${id}"
+      class="card__color card__color--${color}"
+      >${color}</label
+    >`
+  );
 };
 
 const createTaskFormTemplate = (task) => {
-  const {description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
+  const {id, description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
   const {day, month, time} = correctTime;
 
-  const tagsTemplate = createTagsTemplate(tags);
-  const repeatingDaysTemplate = createRepeatingDaysTemplate(DAYS, repeatingDays);
-  const colorsTemplate = createColorsTemplate(COLORS, color);
+  const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
+  const repeatingDaysTemplate = DAYS.map((constDay) => createRepeatingDayTemplate(constDay, repeatingDays, id)).join(`\n`);
+  const colorsTemplate = COLORS.map((constColor) => createColorTemplate(constColor, color, id)).join(`\n`);
+
   const deadlineClass = isDeadline ? `card--deadline` : ``;
   const repeatClass = isRepeat ? `card--repeat` : ``;
 
