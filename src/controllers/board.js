@@ -13,17 +13,21 @@ export default class BoardController {
     this._tasksListModel = tasksListModel;
     this._tasksPerPage = tasksPerPage;
     this._containerElement = containerElement;
+
     this._tasksCount = this._tasksListModel.tasksModels.length;
     this._showingTasksCount = 0;
+
     this._view = new BoardView();
     this._element = this._view.getElement();
-    this._listController = new TasksListController(this._tasksListModel, this._element);
+
     this._sortModel = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
     this._showedTasksControllers = [];
 
     this._changeSortType = this._changeSortType.bind(this);
+
+    this._listController = new TasksListController(this._tasksListModel, this._element);
   }
 
   _changeSortType() {

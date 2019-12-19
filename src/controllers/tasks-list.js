@@ -12,6 +12,18 @@ export default class TasksListController {
 
     this._tasksModels = this._tasksListModel.tasksModels;
     this._sortedTasksModels = this._tasksModels.slice();
+
+    this._onDataChange = this._onDataChange.bind(this);
+  }
+
+  _onDataChange(taskController, newData) {
+    const newTaskModel = this._tasksListModel.updateModelById(taskController.model.id, newData);
+
+    if (newTaskModel) {
+      taskController.model = newTaskModel;
+      taskController.render();
+      this._tasksModels = this._tasksListModel.tasksModels;
+    }
   }
 
   sortByDefault() {
@@ -34,7 +46,7 @@ export default class TasksListController {
     return this._sortedTasksModels
       .slice(fromTaskIndex, toTaskIndex)
       .map((taskModel) => {
-        const taskController = new TaskController(taskModel, this._element);
+        const taskController = new TaskController(taskModel, this._element, this._onDataChange);
 
         taskController.render();
 

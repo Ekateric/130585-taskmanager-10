@@ -30,6 +30,20 @@ export default class TasksListModel {
     return getTaskById(id, this._mock);
   }
 
+  updateModelById(modelId, newData) {
+    const taskIndex = this._tasks.findIndex((task) => task.id === modelId);
+    let newTaskModel = null;
+
+    if (taskIndex > -1) {
+      const oldTaskModel = this._tasks.find((task) => task.id === modelId);
+
+      newTaskModel = new TaskModel(Object.assign({}, oldTaskModel, newData));
+      this._tasks = [].concat(this._tasks.slice(0, taskIndex), newTaskModel, this._tasks.slice(taskIndex + 1));
+    }
+
+    return newTaskModel;
+  }
+
   get tasksModels() {
     return this._tasks;
   }

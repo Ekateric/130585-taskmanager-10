@@ -4,9 +4,10 @@ import render from "../utils/render";
 import replace from "../utils/replace";
 
 export default class TaskController {
-  constructor(taskModel, containerElement) {
+  constructor(taskModel, containerElement, onDataChange) {
     this._model = taskModel;
     this._containerElement = containerElement;
+    this._onDataChange = onDataChange;
 
     this._view = null;
     this._formView = null;
@@ -56,6 +57,18 @@ export default class TaskController {
       document.addEventListener(`keydown`, this._onExitForm);
     });
 
+    this._view.setClickArchiveButton(() => {
+      this._onDataChange(this, {
+        isArchive: !this._model.isArchive
+      });
+    });
+
+    this._view.setClickFavoriteButton(() => {
+      this._onDataChange(this, {
+        isFavorite: !this._model.isFavorite
+      });
+    });
+
     this._formView.setSubmitFormHandler(() => {
       this._replaceEditToView();
     });
@@ -63,5 +76,9 @@ export default class TaskController {
 
   get model() {
     return this._model;
+  }
+
+  set model(newModel) {
+    this._model = newModel;
   }
 }
