@@ -6,9 +6,10 @@ import replace from "../utils/replace";
 export default class TaskController {
   constructor(taskModel, containerElement) {
     this._model = taskModel;
-    this._view = new TaskView(this._model);
-    this._formView = new TaskFormView(this._model);
     this._containerElement = containerElement;
+
+    this._view = null;
+    this._formView = null;
 
     this._onExitForm = this._onExitForm.bind(this);
   }
@@ -31,8 +32,21 @@ export default class TaskController {
   }
 
   render() {
-    render(this._containerElement, this._view);
+    const oldTaskView = this._view;
+    const oldTaskFormView = this._formView;
+
+    this._view = new TaskView(this._model);
+    this._formView = new TaskFormView(this._model);
+
     this.setHandlers();
+
+    if (oldTaskView && oldTaskFormView) {
+      replace(this._view, oldTaskView);
+      replace(this._formView, oldTaskFormView);
+
+    } else {
+      render(this._containerElement, this._view);
+    }
   }
 
   setHandlers() {

@@ -10,34 +10,36 @@ export default class TasksListController {
     this._view = new TasksListView();
     this._element = this._view.getElement();
 
-    this._tasksControllers = this._createTasksControllers(this._tasksListModel.tasksModels); // хранит исходный массив
-    this._sortedTasksControllers = this._tasksControllers.slice();
-  }
-
-  _createTasksControllers(tasksModels) {
-    return tasksModels.map((model) => new TaskController(model, this._element));
+    this._tasksModels = this._tasksListModel.tasksModels;
+    this._sortedTasksModels = this._tasksModels.slice();
   }
 
   sortByDefault() {
-    this._sortedTasksControllers = this._tasksControllers.slice();
+    this._sortedTasksModels = this._tasksModels.slice();
   }
 
   sortByDateUp() {
-    this._sortedTasksControllers = this._tasksControllers
+    this._sortedTasksModels = this._tasksModels
       .slice()
-      .sort((taskOne, taskTwo) => taskOne.model.dueDate - taskTwo.model.dueDate);
+      .sort((taskOne, taskTwo) => taskOne.dueDate - taskTwo.dueDate);
   }
 
   sortByDateDown() {
-    this._sortedTasksControllers = this._tasksControllers
+    this._sortedTasksModels = this._tasksModels
       .slice()
-      .sort((taskOne, taskTwo) => taskTwo.model.dueDate - taskOne.model.dueDate);
+      .sort((taskOne, taskTwo) => taskTwo.dueDate - taskOne.dueDate);
   }
 
   renderPage(fromTaskIndex, toTaskIndex) {
-    this._sortedTasksControllers
+    return this._sortedTasksModels
       .slice(fromTaskIndex, toTaskIndex)
-      .forEach((task) => task.render());
+      .map((taskModel) => {
+        const taskController = new TaskController(taskModel, this._element);
+
+        taskController.render();
+
+        return taskController;
+      });
   }
 
   render() {

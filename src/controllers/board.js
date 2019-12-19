@@ -21,6 +21,7 @@ export default class BoardController {
     this._sortModel = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
+    this._showedTasksControllers = [];
 
     this._changeSortType = this._changeSortType.bind(this);
   }
@@ -42,6 +43,7 @@ export default class BoardController {
       }
 
       this._showingTasksCount = 0;
+      this._showedTasksControllers = [];
 
       if (this._tasksPerPage < this._tasksCount && !this._buttonLoadMoreView) {
         this._buttonLoadMoreView = new ButtonLoadMoreView();
@@ -78,7 +80,9 @@ export default class BoardController {
   }
 
   renderTasksPage() {
-    this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
+    const newTasksControllers = this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
+
+    this._showedTasksControllers.push(...newTasksControllers);
     this._showingTasksCount += this._tasksPerPage;
 
     if (this._showingTasksCount >= this._tasksCount && this._buttonLoadMoreView) {
