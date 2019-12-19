@@ -8,6 +8,8 @@ export default class TaskController {
     this._model = taskModel;
     this._view = new TaskView(this._model);
     this._formView = new TaskFormView(this._model);
+
+    this._onExitForm = this._onExitForm.bind(this);
   }
 
   _replaceViewToEdit() {
@@ -18,26 +20,25 @@ export default class TaskController {
     replace(this._view, this._formView);
   }
 
+  _onExitForm(event) {
+    const isEscKey = event.key === `Escape` || event.key === `Esc`;
+
+    if (isEscKey) {
+      this._replaceEditToView();
+      document.removeEventListener(`keydown`, this._onExitForm);
+    }
+  }
+
   render(renderToElement) {
     render(renderToElement, this._view);
     this.setHandlers();
   }
 
   setHandlers() {
-    const _that = this;
-    const onExitForm = (event) => {
-      const isEscKey = event.key === `Escape` || event.key === `Esc`;
-
-      if (isEscKey) {
-        _that._replaceEditToView();
-        document.removeEventListener(`keydown`, onExitForm);
-      }
-    };
-
     this._view.setClickEditButtonHandler(() => {
       this._replaceViewToEdit();
 
-      document.addEventListener(`keydown`, onExitForm);
+      document.addEventListener(`keydown`, this._onExitForm);
     });
 
     this._formView.setSubmitFormHandler(() => {
