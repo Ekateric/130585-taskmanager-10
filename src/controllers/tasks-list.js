@@ -1,14 +1,21 @@
 import TasksListView from "../views/tasks-list";
+import TaskController from "./task";
 import render from "../utils/render";
 
 export default class TasksListController {
   constructor(tasksListModel, containerElement) {
     this._tasksListModel = tasksListModel;
     this._containerElement = containerElement;
-    this._tasksControllers = this._tasksListModel.tasksControllers; // хранит исходный массив
-    this._sortedTasksControllers = this._tasksControllers.slice();
+
     this._view = new TasksListView();
     this._element = this._view.getElement();
+
+    this._tasksControllers = this._createTasksControllers(this._tasksListModel.tasksModels); // хранит исходный массив
+    this._sortedTasksControllers = this._tasksControllers.slice();
+  }
+
+  _createTasksControllers(tasksModels) {
+    return tasksModels.map((model) => new TaskController(model, this._element));
   }
 
   sortByDefault() {
@@ -30,7 +37,7 @@ export default class TasksListController {
   renderPage(fromTaskIndex, toTaskIndex) {
     this._sortedTasksControllers
       .slice(fromTaskIndex, toTaskIndex)
-      .forEach((task) => task.render(this._element));
+      .forEach((task) => task.render());
   }
 
   render() {

@@ -1,22 +1,21 @@
 import {getAllTasks, getTaskById} from "../services/api/index";
-import TaskController from "../controllers/task";
 import TaskModel from "./task";
 import TasksMock from "../mock/tasks";
 
 export default class TasksListModel {
   constructor() {
     this._mock = new TasksMock();
-    this._tasks = this._createTasks(this.getAllTasks());
+    this._tasks = this._createTasksModels(this.getAllTasks());
     this._isAllArchived = this._checkIsAllArchived();
     this._isEmpty = this._checkIsEmpty();
   }
 
-  _createTasks(data) {
-    return data.map((task) => new TaskController(new TaskModel(task)));
+  _createTasksModels(data) {
+    return data.map((task) => new TaskModel(task));
   }
 
   _checkIsAllArchived() {
-    return this._tasks.every((taskController) => taskController.model.isArchive);
+    return this._tasks.every((task) => task.isArchive);
   }
 
   _checkIsEmpty() {
@@ -31,12 +30,8 @@ export default class TasksListModel {
     return getTaskById(id, this._mock);
   }
 
-  get tasksControllers() {
-    return this._tasks;
-  }
-
   get tasksModels() {
-    return this._tasks.map((task) => task.model);
+    return this._tasks;
   }
 
   get isAllArchived() {

@@ -4,10 +4,11 @@ import render from "../utils/render";
 import replace from "../utils/replace";
 
 export default class TaskController {
-  constructor(taskModel) {
+  constructor(taskModel, containerElement) {
     this._model = taskModel;
     this._view = new TaskView(this._model);
     this._formView = new TaskFormView(this._model);
+    this._containerElement = containerElement;
 
     this._onExitForm = this._onExitForm.bind(this);
   }
@@ -29,8 +30,8 @@ export default class TaskController {
     }
   }
 
-  render(renderToElement) {
-    render(renderToElement, this._view);
+  render() {
+    render(this._containerElement, this._view);
     this.setHandlers();
   }
 

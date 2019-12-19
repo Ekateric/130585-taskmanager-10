@@ -21,6 +21,8 @@ export default class BoardController {
     this._sortModel = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
+
+    this._changeSortType = this._changeSortType.bind(this);
   }
 
   _changeSortType() {
@@ -52,7 +54,7 @@ export default class BoardController {
 
   _renderSort() {
     this._sortModel = new SortModel(SortTypes);
-    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType.bind(this));
+    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType);
     this._sortController.render();
   }
 
