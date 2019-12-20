@@ -26,8 +26,9 @@ export default class BoardController {
     this._showedTasksControllers = [];
 
     this._changeSortType = this._changeSortType.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
 
-    this._listController = new TasksListController(this._tasksListModel, this._element);
+    this._listController = new TasksListController(this._tasksListModel, this._element, this._onViewChange);
   }
 
   _changeSortType() {
@@ -56,6 +57,10 @@ export default class BoardController {
 
       this.renderTasksPage();
     }
+  }
+
+  _onViewChange() {
+    this._showedTasksControllers.forEach((task) => task.setDefaultView());
   }
 
   _renderSort() {

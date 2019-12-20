@@ -4,23 +4,28 @@ import render from "../utils/render";
 import replace from "../utils/replace";
 
 export default class TaskController {
-  constructor(taskModel, containerElement, onDataChange) {
+  constructor(taskModel, containerElement, onDataChange, onViewChange) {
     this._model = taskModel;
     this._containerElement = containerElement;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
 
     this._view = null;
     this._formView = null;
+    this._isEditMode = false;
 
     this._onExitForm = this._onExitForm.bind(this);
   }
 
   _replaceViewToEdit() {
+    this._onViewChange();
     replace(this._formView, this._view);
+    this._isEditMode = true;
   }
 
   _replaceEditToView() {
     replace(this._view, this._formView);
+    this._isEditMode = false;
   }
 
   _onExitForm(event) {
@@ -72,6 +77,12 @@ export default class TaskController {
     this._formView.setSubmitFormHandler(() => {
       this._replaceEditToView();
     });
+  }
+
+  setDefaultView() {
+    if (this._isEditMode) {
+      this._replaceEditToView();
+    }
   }
 
   get model() {

@@ -3,7 +3,7 @@ import TaskController from "./task";
 import render from "../utils/render";
 
 export default class TasksListController {
-  constructor(tasksListModel, containerElement) {
+  constructor(tasksListModel, containerElement, onViewChange) {
     this._tasksListModel = tasksListModel;
     this._containerElement = containerElement;
 
@@ -13,6 +13,7 @@ export default class TasksListController {
     this._tasksModels = this._tasksListModel.tasksModels;
     this._sortedTasksModels = this._tasksModels.slice();
 
+    this._onViewChange = onViewChange;
     this._onDataChange = this._onDataChange.bind(this);
   }
 
@@ -46,7 +47,7 @@ export default class TasksListController {
     return this._sortedTasksModels
       .slice(fromTaskIndex, toTaskIndex)
       .map((taskModel) => {
-        const taskController = new TaskController(taskModel, this._element, this._onDataChange);
+        const taskController = new TaskController(taskModel, this._element, this._onDataChange, this._onViewChange);
 
         taskController.render();
 
