@@ -175,12 +175,16 @@ export default class TaskFormView extends AbstractSmartView {
     super();
 
     this._task = task;
-    this._options = {
+    this._options = this._setOptions();
+    this._subscribeOnEvents();
+  }
+
+  _setOptions() {
+    return {
       isDateShowOption: this._task.isDateShow,
       isRepeatOption: this._task.isRepeat,
       repeatingDaysOption: this._task.isRepeat ? Object.assign({}, this._task.repeatingDays) : createRepeatingDaysObj(DAYS)
     };
-    this._subscribeOnEvents();
   }
 
   _onDeadlineToggleClick() {
@@ -231,5 +235,10 @@ export default class TaskFormView extends AbstractSmartView {
     this.getElement()
       .querySelector(`.card__form`)
       .addEventListener(`submit`, handler);
+  }
+
+  reset() {
+    this._options = this._setOptions();
+    this.rerender();
   }
 }

@@ -32,6 +32,7 @@ export default class TaskController {
     const isEscKey = event.key === `Escape` || event.key === `Esc`;
 
     if (isEscKey) {
+      this._formView.reset();
       this._replaceEditToView();
       document.removeEventListener(`keydown`, this._onExitForm);
     }
@@ -81,6 +82,7 @@ export default class TaskController {
 
   setDefaultView() {
     if (this._isEditMode) {
+      this._formView.reset();
       this._replaceEditToView();
     }
   }
