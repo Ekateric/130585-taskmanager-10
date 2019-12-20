@@ -60,7 +60,7 @@ const createColorTemplate = (color, checkedColor, id) => {
 };
 
 const createTaskFormTemplate = (task) => {
-  const {id, description, repeatingDays, tags, color, correctTime, isDeadline, isRepeat} = task;
+  const {id, description, repeatingDays, tags, color, correctTime, isDeadline, isDateShow, isRepeat} = task;
   const {day, month, time} = correctTime;
 
   const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
@@ -94,30 +94,32 @@ const createTaskFormTemplate = (task) => {
             <div class="card__details">
               <div class="card__dates">
                 <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">${isRepeat ? `no` : `yes`}</span>
+                  date: <span class="card__date-status">${isDateShow ? `no` : `yes`}</span>
                 </button>
 
-                <fieldset class="card__date-deadline"${isRepeat ? ` disabled` : ``}>
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__date"
-                      type="text"
-                      placeholder=""
-                      name="date"
-                      value="${day} ${month} ${time}"
-                    />
-                  </label>
-                </fieldset>
+                ${isDateShow ? `
+                  <fieldset class="card__date-deadline">
+                    <label class="card__input-deadline-wrap">
+                      <input
+                        class="card__date"
+                        type="text"
+                        placeholder=""
+                        name="date"
+                        value="${day} ${month} ${time}"
+                      />
+                    </label>
+                  </fieldset>` : ``}
 
                 <button class="card__repeat-toggle" type="button">
                   repeat: <span class="card__repeat-status">${isRepeat ? `yes` : `no`}</span>
                 </button>
 
-                <fieldset class="card__repeat-days"${isRepeat ? `` : ` disabled`}>
-                  <div class="card__repeat-days-inner">
-                    ${repeatingDaysTemplate}
-                  </div>
-                </fieldset>
+                ${isRepeat ? `
+                  <fieldset class="card__repeat-days">
+                    <div class="card__repeat-days-inner">
+                      ${repeatingDaysTemplate}
+                    </div>
+                  </fieldset>` : ``}
               </div>
 
               <div class="card__hashtag">
