@@ -1,6 +1,16 @@
-import AbstractView from "./abstract";
+import AbstractSmartView from "./abstract-smart";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
+
+const createRepeatingDaysObj = (days) => {
+  const repeatingDays = {};
+
+  days.forEach((day) => {
+    repeatingDays[day] = false;
+  });
+
+  return repeatingDays;
+};
 
 const createRepeatingDayTemplate = (day, repeatingDays, id) => {
   const isChecked = repeatingDays && repeatingDays[day];
@@ -59,16 +69,20 @@ const createColorTemplate = (color, checkedColor, id) => {
   );
 };
 
-const createTaskFormTemplate = (task) => {
-  const {id, description, repeatingDays, tags, color, correctTime, isDeadline, isDateShow, isRepeat} = task;
+const createTaskFormTemplate = (task, options) => {
+  const {id, description, tags, color, correctTime, isDeadline} = task;
   const {day, month, time} = correctTime;
+  const {repeatingDaysOption, isDateShowOption, isRepeatOption} = options;
 
   const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
-  const repeatingDaysTemplate = DAYS.map((constDay) => createRepeatingDayTemplate(constDay, repeatingDays, id)).join(`\n`);
+  const repeatingDaysTemplate = DAYS.map((constDay) => createRepeatingDayTemplate(constDay, repeatingDaysOption, id)).join(`\n`);
   const colorsTemplate = COLORS.map((constColor) => createColorTemplate(constColor, color, id)).join(`\n`);
 
   const deadlineClass = isDeadline ? `card--deadline` : ``;
-  const repeatClass = isRepeat ? `card--repeat` : ``;
+  const repeatClass = isRepeatOption ? `card--repeat` : ``;
+
+  const isBlockSaveButton = (isDateShowOption && isRepeatOption) ||
+    (isRepeatOption && !Object.values(repeatingDaysOption).some(Boolean));
 
   return (
     `<article class="card card--edit card--${color} ${deadlineClass} ${repeatClass}">
@@ -94,10 +108,10 @@ const createTaskFormTemplate = (task) => {
             <div class="card__details">
               <div class="card__dates">
                 <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">${isDateShow ? `no` : `yes`}</span>
+                  date: <span class="card__date-status">${isDateShowOption ? `yes` : `no`}</span>
                 </button>
 
-                ${isDateShow ? `
+                ${isDateShowOption ? `
                   <fieldset class="card__date-deadline">
                     <label class="card__input-deadline-wrap">
                       <input
@@ -111,10 +125,10 @@ const createTaskFormTemplate = (task) => {
                   </fieldset>` : ``}
 
                 <button class="card__repeat-toggle" type="button">
-                  repeat: <span class="card__repeat-status">${isRepeat ? `yes` : `no`}</span>
+                  repeat: <span class="card__repeat-status">${isRepeatOption ? `yes` : `no`}</span>
                 </button>
 
-                ${isRepeat ? `
+                ${isRepeatOption ? `
                   <fieldset class="card__repeat-days">
                     <div class="card__repeat-days-inner">
                       ${repeatingDaysTemplate}
@@ -147,7 +161,7 @@ const createTaskFormTemplate = (task) => {
           </div>
 
           <div class="card__status-btns">
-            <button class="card__save" type="submit">save</button>
+            <button class="card__save" type="submit"${isBlockSaveButton ? ` disabled` : ``}>save</button>
             <button class="card__delete" type="button">delete</button>
           </div>
         </div>
@@ -156,15 +170,61 @@ const createTaskFormTemplate = (task) => {
   );
 };
 
-export default class TaskFormView extends AbstractView {
+export default class TaskFormView extends AbstractSmartView {
   constructor(task) {
     super();
 
     this._task = task;
+    this._options = {
+      isDateShowOption: this._task.isDateShow,
+      isRepeatOption: this._task.isRepeat,
+      repeatingDaysOption: this._task.isRepeat ? Object.assign({}, this._task.repeatingDays) : createRepeatingDaysObj(DAYS)
+    };
+    this._subscribeOnEvents();
+  }
+
+  _onDeadlineToggleClick() {
+    this.getElement()
+      .querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, () => {
+        this._options.isDateShowOption = !this._options.isDateShowOption;
+        this.rerender();
+      });
+  }
+
+  _onRepeatToggleClick() {
+    this.getElement()
+      .querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, () => {
+        this._options.isRepeatOption = !this._options.isRepeatOption;
+        this.rerender();
+      });
+  }
+
+  _onRepeatDayChange() {
+    const repeatDaysInputs = this.getElement()
+      .querySelectorAll(`.card__repeat-day-input`);
+
+    Array.from(repeatDaysInputs).forEach((input) => {
+      input.addEventListener(`change`, (event) => {
+        this._options.repeatingDaysOption[event.target.value] = event.target.checked;
+        this.rerender();
+      });
+    });
+  }
+
+  _subscribeOnEvents() {
+    this._onDeadlineToggleClick();
+    this._onRepeatToggleClick();
+    this._onRepeatDayChange();
   }
 
   getTemplate() {
-    return createTaskFormTemplate(this._task);
+    return createTaskFormTemplate(this._task, this._options);
+  }
+
+  recoveryListeners() {
+    this._subscribeOnEvents();
   }
 
   setSubmitFormHandler(handler) {
