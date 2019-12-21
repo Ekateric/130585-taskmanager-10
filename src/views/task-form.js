@@ -229,7 +229,7 @@ export default class TaskFormView extends AbstractSmartView {
   }
 
   recoveryListeners() {
-    this.setSubmitHandler(this._submitHandler);
+    this.setSubmitFormHandler(this._submitHandler);
     this._subscribeOnEvents();
   }
 
