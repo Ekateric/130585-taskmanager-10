@@ -176,6 +176,7 @@ export default class TaskFormView extends AbstractSmartView {
 
     this._task = task;
     this._options = this._setOptions();
+    this._submitHandler = null;
     this._subscribeOnEvents();
   }
 
@@ -228,6 +229,7 @@ export default class TaskFormView extends AbstractSmartView {
   }
 
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
     this._subscribeOnEvents();
   }
 
@@ -235,6 +237,8 @@ export default class TaskFormView extends AbstractSmartView {
     this.getElement()
       .querySelector(`.card__form`)
       .addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 
   reset() {

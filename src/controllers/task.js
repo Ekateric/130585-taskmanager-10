@@ -26,6 +26,7 @@ export default class TaskController {
   _replaceEditToView() {
     replace(this._view, this._formView);
     this._isEditMode = false;
+    document.removeEventListener(`keydown`, this._onExitForm);
   }
 
   _onExitForm(event) {
@@ -34,7 +35,6 @@ export default class TaskController {
     if (isEscKey) {
       this._formView.reset();
       this._replaceEditToView();
-      document.removeEventListener(`keydown`, this._onExitForm);
     }
   }
 
@@ -75,7 +75,8 @@ export default class TaskController {
       });
     });
 
-    this._formView.setSubmitFormHandler(() => {
+    this._formView.setSubmitFormHandler((event) => {
+      event.preventDefault();
       this._replaceEditToView();
     });
   }
