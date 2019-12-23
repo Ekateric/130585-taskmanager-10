@@ -13,14 +13,22 @@ export default class BoardController {
     this._tasksListModel = tasksListModel;
     this._tasksPerPage = tasksPerPage;
     this._containerElement = containerElement;
+
     this._tasksCount = this._tasksListModel.tasksModels.length;
     this._showingTasksCount = 0;
+
     this._view = new BoardView();
     this._element = this._view.getElement();
-    this._listController = new TasksListController(this._tasksListModel, this._element);
+
     this._sortModel = null;
     this._buttonLoadMoreView = null;
     this._noTasksView = null;
+    this._showedTasksControllers = [];
+
+    this._changeSortType = this._changeSortType.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
+
+    this._listController = new TasksListController(this._tasksListModel, this._element, this._onViewChange);
   }
 
   _changeSortType() {
@@ -40,6 +48,7 @@ export default class BoardController {
       }
 
       this._showingTasksCount = 0;
+      this._showedTasksControllers = [];
 
       if (this._tasksPerPage < this._tasksCount && !this._buttonLoadMoreView) {
         this._buttonLoadMoreView = new ButtonLoadMoreView();
@@ -50,9 +59,13 @@ export default class BoardController {
     }
   }
 
+  _onViewChange() {
+    this._showedTasksControllers.forEach((task) => task.setDefaultView());
+  }
+
   _renderSort() {
     this._sortModel = new SortModel(SortTypes);
-    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType.bind(this));
+    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType);
     this._sortController.render();
   }
 
@@ -76,7 +89,9 @@ export default class BoardController {
   }
 
   renderTasksPage() {
-    this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
+    const newTasksControllers = this._listController.renderPage(this._showingTasksCount, this._showingTasksCount + this._tasksPerPage);
+
+    this._showedTasksControllers.push(...newTasksControllers);
     this._showingTasksCount += this._tasksPerPage;
 
     if (this._showingTasksCount >= this._tasksCount && this._buttonLoadMoreView) {

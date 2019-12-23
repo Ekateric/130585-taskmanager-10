@@ -10,8 +10,10 @@ export default class TaskModel {
     this.color = data.color;
     this.isFavorite = data.isFavorite;
     this.isArchive = data.isArchive;
+
     this.correctTime = this.dueDate ? getCorrectTime(this.dueDate) : {day: ``, month: ``, time: ``};
     this.isDeadline = this.dueDate instanceof Date && this.dueDate < Date.now();
-    this.isRepeat = !!this.repeatingDays;
+    this.isDateShow = !!this.dueDate;
+    this.isRepeat = !!this.repeatingDays && typeof this.repeatingDays === `object` && Object.values(this.repeatingDays).some(Boolean);
   }
 }

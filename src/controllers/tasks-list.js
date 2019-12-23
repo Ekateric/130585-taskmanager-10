@@ -1,36 +1,58 @@
 import TasksListView from "../views/tasks-list";
+import TaskController from "./task";
 import render from "../utils/render";
 
 export default class TasksListController {
-  constructor(tasksListModel, containerElement) {
+  constructor(tasksListModel, containerElement, onViewChange) {
     this._tasksListModel = tasksListModel;
     this._containerElement = containerElement;
-    this._tasksControllers = this._tasksListModel.tasksControllers; // хранит исходный массив
-    this._sortedTasksControllers = this._tasksControllers.slice();
+
     this._view = new TasksListView();
     this._element = this._view.getElement();
+
+    this._tasksModels = this._tasksListModel.tasksModels;
+    this._sortedTasksModels = this._tasksModels.slice();
+
+    this._onViewChange = onViewChange;
+    this._onDataChange = this._onDataChange.bind(this);
+  }
+
+  _onDataChange(taskController, newData) {
+    const newTaskModel = this._tasksListModel.updateModelById(taskController.model.id, newData);
+
+    if (newTaskModel) {
+      taskController.model = newTaskModel;
+      taskController.render();
+      this._tasksModels = this._tasksListModel.tasksModels;
+    }
   }
 
   sortByDefault() {
-    this._sortedTasksControllers = this._tasksControllers.slice();
+    this._sortedTasksModels = this._tasksModels.slice();
   }
 
   sortByDateUp() {
-    this._sortedTasksControllers = this._tasksControllers
+    this._sortedTasksModels = this._tasksModels
       .slice()
-      .sort((taskOne, taskTwo) => taskOne.model.dueDate - taskTwo.model.dueDate);
+      .sort((taskOne, taskTwo) => taskOne.dueDate - taskTwo.dueDate);
   }
 
   sortByDateDown() {
-    this._sortedTasksControllers = this._tasksControllers
+    this._sortedTasksModels = this._tasksModels
       .slice()
-      .sort((taskOne, taskTwo) => taskTwo.model.dueDate - taskOne.model.dueDate);
+      .sort((taskOne, taskTwo) => taskTwo.dueDate - taskOne.dueDate);
   }
 
   renderPage(fromTaskIndex, toTaskIndex) {
-    this._sortedTasksControllers
+    return this._sortedTasksModels
       .slice(fromTaskIndex, toTaskIndex)
-      .forEach((task) => task.render(this._element));
+      .map((taskModel) => {
+        const taskController = new TaskController(taskModel, this._element, this._onDataChange, this._onViewChange);
+
+        taskController.render();
+
+        return taskController;
+      });
   }
 
   render() {

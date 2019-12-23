@@ -89,4 +89,16 @@ export default class TaskView extends AbstractView {
       .querySelector(`.card__btn--edit`)
       .addEventListener(`click`, handler);
   }
+
+  setClickArchiveButton(handler) {
+    this.getElement()
+      .querySelector(`.card__btn--archive`)
+      .addEventListener(`click`, handler);
+  }
+
+  setClickFavoriteButton(handler) {
+    this.getElement()
+      .querySelector(`.card__btn--favorites`)
+      .addEventListener(`click`, handler);
+  }
 }
