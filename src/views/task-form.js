@@ -205,6 +205,7 @@ export default class TaskFormView extends AbstractSmartView {
       this._flatpickr = flatpickr(dateElement, {
         altInput: true,
         allowInput: true,
+        altFormat: `j F G:i K`,
         defaultDate
       });
     }
