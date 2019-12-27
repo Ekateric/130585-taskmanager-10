@@ -72,7 +72,7 @@ const createColorTemplate = (color, checkedColor, id) => {
 
 const createTaskFormTemplate = (task, options) => {
   const {id, description, tags, color, correctTime, isDeadline} = task;
-  const {day, month, time} = correctTime;
+  const {date, time} = correctTime;
   const {repeatingDaysOption, isDateShowOption, isRepeatOption} = options;
 
   const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
@@ -120,7 +120,7 @@ const createTaskFormTemplate = (task, options) => {
                         type="text"
                         placeholder=""
                         name="date"
-                        value="${day} ${month} ${time}"
+                        value="${date} ${time}"
                       />
                     </label>
                   </fieldset>` : ``}
