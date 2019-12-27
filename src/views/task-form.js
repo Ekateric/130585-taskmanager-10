@@ -206,6 +206,7 @@ export default class TaskFormView extends AbstractSmartView {
         altInput: true,
         allowInput: true,
         altFormat: `j F G:i K`,
+        enableTime: true,
         defaultDate
       });
     }
