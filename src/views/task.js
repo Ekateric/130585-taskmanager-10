@@ -15,7 +15,7 @@ const createTagsTemplate = (tags) => {
 
 const createTaskTemplate = (task) => {
   const {description, tags, color, correctTime, isFavorite, isArchive, isDeadline, isRepeat} = task;
-  const {day, month, time} = correctTime;
+  const {date, time} = correctTime;
 
   const tagsTemplate = createTagsTemplate(tags);
   const deadlineClass = isDeadline ? `card--deadline` : ``;
@@ -54,7 +54,7 @@ const createTaskTemplate = (task) => {
               <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
-                    <span class="card__date">${day} ${month}</span>
+                    <span class="card__date">${date}</span>
                     <span class="card__time">${time}</span>
                   </p>
                 </div>

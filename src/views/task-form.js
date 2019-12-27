@@ -1,4 +1,5 @@
 import AbstractSmartView from "./abstract-smart";
+import flatpickr from "flatpickr";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
 
@@ -71,7 +72,7 @@ const createColorTemplate = (color, checkedColor, id) => {
 
 const createTaskFormTemplate = (task, options) => {
   const {id, description, tags, color, correctTime, isDeadline} = task;
-  const {day, month, time} = correctTime;
+  const {date, time} = correctTime;
   const {repeatingDaysOption, isDateShowOption, isRepeatOption} = options;
 
   const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
@@ -119,7 +120,7 @@ const createTaskFormTemplate = (task, options) => {
                         type="text"
                         placeholder=""
                         name="date"
-                        value="${day} ${month} ${time}"
+                        value="${date} ${time}"
                       />
                     </label>
                   </fieldset>` : ``}
@@ -176,7 +177,10 @@ export default class TaskFormView extends AbstractSmartView {
 
     this._task = task;
     this._options = this._setOptions();
+    this._flatpickr = null;
     this._submitHandler = null;
+
+    this._applyFlatpickr();
     this._subscribeOnEvents();
   }
 
@@ -186,6 +190,26 @@ export default class TaskFormView extends AbstractSmartView {
       isRepeatOption: this._task.isRepeat,
       repeatingDaysOption: this._task.isRepeat ? Object.assign({}, this._task.repeatingDays) : createRepeatingDaysObj(DAYS)
     };
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    if (this._options.isDateShowOption) {
+      const dateElement = this.getElement().querySelector(`.card__date`);
+      const defaultDate = this._task.dueDate || Date.now();
+
+      this._flatpickr = flatpickr(dateElement, {
+        altInput: true,
+        allowInput: true,
+        altFormat: `j F G:i K`,
+        enableTime: true,
+        defaultDate
+      });
+    }
   }
 
   _onDeadlineToggleClick() {
@@ -231,6 +255,12 @@ export default class TaskFormView extends AbstractSmartView {
   recoveryListeners() {
     this.setSubmitFormHandler(this._submitHandler);
     this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
   }
 
   setSubmitFormHandler(handler) {
