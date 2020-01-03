@@ -1,7 +1,7 @@
 import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
-import render from "../utils/render";
-import replace from "../utils/replace";
+import render from "../utils/common/render";
+import replace from "../utils/common/replace";
 
 export default class TaskController {
   constructor(taskModel, containerElement, onDataChange, onViewChange) {

@@ -5,8 +5,8 @@ import SortController from "./sort";
 import TasksListController from "./tasks-list";
 import ButtonLoadMoreView from "../views/button-load-more";
 import NoTasksView from "../views/no-tasks";
-import render from "../utils/render";
-import remove from "../utils/remove";
+import render from "../utils/common/render";
+import remove from "../utils/common/remove";
 
 export default class BoardController {
   constructor(tasksListModel, tasksPerPage, containerElement) {

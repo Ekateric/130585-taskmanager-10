@@ -1,6 +1,6 @@
 import TasksListView from "../views/tasks-list";
 import TaskController from "./task";
-import render from "../utils/render";
+import render from "../utils/common/render";
 
 export default class TasksListController {
   constructor(tasksListModel, containerElement, onViewChange) {
