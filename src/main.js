@@ -11,7 +11,7 @@ import render from "./utils/render";
 const TASK_PER_PAGE = 8;
 
 const tasksListModel = new TasksListModel();
-const tasks = tasksListModel.tasksModels;
+const tasks = tasksListModel.tasks;
 
 const menuModel = new MenuModel(Menu);
 const menuItems = menuModel.items;

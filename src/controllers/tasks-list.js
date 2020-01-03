@@ -10,7 +10,7 @@ export default class TasksListController {
     this._view = new TasksListView();
     this._element = this._view.getElement();
 
-    this._tasksModels = this._tasksListModel.tasksModels;
+    this._tasksModels = this._tasksListModel.tasks;
     this._sortedTasksModels = this._tasksModels.slice();
 
     this._onViewChange = onViewChange;
@@ -23,7 +23,7 @@ export default class TasksListController {
     if (newTaskModel) {
       taskController.model = newTaskModel;
       taskController.render();
-      this._tasksModels = this._tasksListModel.tasksModels;
+      this._tasksModels = this._tasksListModel.tasks;
     }
   }
 

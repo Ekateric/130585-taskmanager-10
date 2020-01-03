@@ -40,7 +40,7 @@ export default class TasksListModel {
     return newTaskModel;
   }
 
-  get tasksModels() {
+  get tasks() {
     return this._tasks;
   }
 
@@ -50,5 +50,9 @@ export default class TasksListModel {
 
   get isEmpty() {
     return this._isEmpty;
+  }
+
+  set tasks(tasks) {
+    this._tasks = this._createTasksModels(Array.from(tasks));
   }
 }

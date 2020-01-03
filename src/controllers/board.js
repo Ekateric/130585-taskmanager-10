@@ -14,7 +14,7 @@ export default class BoardController {
     this._tasksPerPage = tasksPerPage;
     this._containerElement = containerElement;
 
-    this._tasksCount = this._tasksListModel.tasksModels.length;
+    this._tasksCount = this._tasksListModel.tasks.length;
     this._showingTasksCount = 0;
 
     this._view = new BoardView();
