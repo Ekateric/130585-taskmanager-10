@@ -6,6 +6,7 @@ export default class FiltersController {
     this._model = filtersModel;
     this._containerElement = containerElement;
 
+    this._model.checked = `all`;
     this._view = new FiltersView(this._model.filters);
   }
 

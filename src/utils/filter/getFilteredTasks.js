@@ -5,22 +5,23 @@ import getOverdueTasks from "./getOverdueTasks";
 import getRepeatingTasks from "./getRepeatingTasks";
 import getSameDayTasks from "./getSameDayTasks";
 import getTaggedTasks from "./getTaggedTasks";
+import Filters from "../../data/filters";
 
 export default (tasks, filterTitle) => {
   switch (filterTitle) {
-    case `all`:
+    case Filters.ALL:
       return getNotArchiveTasks(tasks);
-    case `overdue`:
+    case Filters.OVERDUE:
       return getOverdueTasks(getNotArchiveTasks(tasks), Date.now());
-    case `today`:
+    case Filters.TODAY:
       return getSameDayTasks(getNotArchiveTasks(tasks), new Date());
-    case `favorites`:
+    case Filters.FAVORITES:
       return getFavoriteTasks(getNotArchiveTasks(tasks));
-    case `repeating`:
+    case Filters.REPEATING:
       return getRepeatingTasks(getNotArchiveTasks(tasks));
-    case `tags`:
+    case Filters.TAGS:
       return getTaggedTasks(getNotArchiveTasks(tasks));
-    case `archive`:
+    case Filters.ARCHIVE:
       return getArchiveTasks(tasks);
     default:
       return tasks;

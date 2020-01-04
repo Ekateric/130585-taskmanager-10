@@ -1,7 +1,7 @@
 import AbstractView from "./abstract";
 
 const createFilterTemplate = (filter) => {
-  const {title, count} = filter;
+  const {title, count, isChecked} = filter;
 
   return (
     `<input
@@ -9,11 +9,11 @@ const createFilterTemplate = (filter) => {
         id="filter__${title}"
         class="filter__input visually-hidden"
         name="filter"
-        ${title === `all` ? `checked` : ``}
+        ${isChecked ? `checked` : ``}
         ${count ? `` : `disabled`}
       />
       <label for="filter__${title}" class="filter__label">
-        ${title} 
+        ${title}
         <span class="filter__${title}-count">${count}</span>
       </label>`
   );
