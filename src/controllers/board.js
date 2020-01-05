@@ -1,4 +1,4 @@
-import {SortTypes} from "../mock/sort-types";
+import SortTypes from "../data/sort-types";
 import BoardView from "../views/board";
 import SortModel from "../models/sort";
 import SortController from "./sort";
@@ -40,24 +40,22 @@ export default class BoardController {
   }
 
   _onSortTypeChange() {
-    if (this._sortModel) {
-      this._removeTasks();
+    this._removeTasks();
 
-      switch (this._sortModel.checked) {
-        case `default`:
-          this._listController.sortByDefault();
-          break;
-        case `date-up`:
-          this._listController.sortByDateUp();
-          break;
-        case `date-down`:
-          this._listController.sortByDateDown();
-          break;
-      }
-
-      this.renderTasksPage();
-      this._renderButtonLoadMore();
+    switch (this._sortModel.checked) {
+      case `default`:
+        this._listController.sortByDefault();
+        break;
+      case `date-up`:
+        this._listController.sortByDateUp();
+        break;
+      case `date-down`:
+        this._listController.sortByDateDown();
+        break;
     }
+
+    this.renderTasksPage();
+    this._renderButtonLoadMore();
   }
 
   _onViewChange() {
@@ -65,13 +63,10 @@ export default class BoardController {
   }
 
   _onFilterChange() {
-    this._removeTasks();
-
     this._listController.updateTasksData();
     this._tasksCount = this._tasksListModel.tasks.length;
 
-    this.renderTasksPage();
-    this._renderButtonLoadMore();
+    this._onSortTypeChange();
   }
 
   _renderSort() {

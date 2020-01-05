@@ -23,7 +23,7 @@ export default class TasksListController {
     if (newTaskModel) {
       taskController.model = newTaskModel;
       taskController.render();
-      this._tasksModels = this._tasksListModel.tasks;
+      this.updateTasksData();
     }
   }
 
@@ -45,7 +45,6 @@ export default class TasksListController {
 
   updateTasksData() {
     this._tasksModels = this._tasksListModel.tasks;
-    this._sortedTasksModels = this._tasksModels.slice();
   }
 
   renderPage(fromTaskIndex, toTaskIndex) {

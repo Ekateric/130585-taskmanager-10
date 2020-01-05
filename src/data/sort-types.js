@@ -1,4 +1,4 @@
-export const SortTypes = [
+export default [
   {
     id: `default`,
     title: `SORT BY DEFAULT`
