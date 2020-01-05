@@ -3,7 +3,7 @@ import FilterModel from "./filter";
 export default class FiltersListModel {
   constructor(filtersTitles, tasksListModel) {
     this.tasksListModel = tasksListModel;
-    this._filters = this._createFilters(Object.values(filtersTitles), this.tasksListModel.tasks);
+    this._filters = this._createFilters(Object.values(filtersTitles), this.tasksListModel.allTasks);
     this._checkedId = null;
   }
 
