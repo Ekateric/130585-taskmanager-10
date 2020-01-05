@@ -1,6 +1,8 @@
 import {getAllTasks, getTaskById} from "../services/api/index";
 import TaskModel from "./task";
 import TasksMock from "../mock/tasks";
+import getFilteredTasks from "../utils/filter/getFilteredTasks";
+import Filters from "../data/filters";
 
 export default class TasksListModel {
   constructor() {
@@ -8,6 +10,9 @@ export default class TasksListModel {
     this._tasks = this._createTasksModels(this.getAllTasks());
     this._isAllArchived = this._checkIsAllArchived();
     this._isEmpty = this._tasks.length === 0;
+
+    this._filter = Filters.ALL;
+    this._filterChangeHandler = null;
   }
 
   _createTasksModels(data) {
@@ -40,7 +45,20 @@ export default class TasksListModel {
     return newTaskModel;
   }
 
+  setFilter(filterTitle) {
+    this._filter = filterTitle;
+    this._filterChangeHandler();
+  }
+
+  setFilterChangeHandler(handler) {
+    this._filterChangeHandler = handler;
+  }
+
   get tasks() {
+    return getFilteredTasks(this._tasks, this._filter);
+  }
+
+  get allTasks() {
     return this._tasks;
   }
 

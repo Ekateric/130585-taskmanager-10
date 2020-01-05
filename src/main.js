@@ -17,7 +17,7 @@ menuModel.checked = `task`;
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-const filtersModel = new FiltersListModel(Filters, tasksListModel.tasks);
+const filtersModel = new FiltersListModel(Filters, tasksListModel);
 const filtersController = new FiltersController(filtersModel, siteMainElement);
 const boardController = new BoardController(tasksListModel, TASK_PER_PAGE, siteMainElement);
 

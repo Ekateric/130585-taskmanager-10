@@ -31,7 +31,7 @@ export default class SortView extends AbstractView {
   }
 
   setClickLinksHandler(handler) {
-    Array.from(this._linksElements).forEach((link) => {
+    [...this._linksElements].forEach((link) => {
       link.addEventListener(`click`, function (event) {
         event.preventDefault();
         handler(event.target.dataset.sortType);

@@ -43,6 +43,11 @@ export default class TasksListController {
       .sort((taskOne, taskTwo) => taskTwo.dueDate - taskOne.dueDate);
   }
 
+  updateTasksData() {
+    this._tasksModels = this._tasksListModel.tasks;
+    this._sortedTasksModels = this._tasksModels.slice();
+  }
+
   renderPage(fromTaskIndex, toTaskIndex) {
     return this._sortedTasksModels
       .slice(fromTaskIndex, toTaskIndex)

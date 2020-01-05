@@ -25,15 +25,23 @@ export default class BoardController {
     this._noTasksView = null;
     this._showedTasksControllers = [];
 
-    this._changeSortType = this._changeSortType.bind(this);
+    this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
 
     this._listController = new TasksListController(this._tasksListModel, this._element, this._onViewChange);
+    this._tasksListModel.setFilterChangeHandler(this._onFilterChange);
   }
 
-  _changeSortType() {
+  _removeTasks() {
+    this._listController.clear();
+    this._showingTasksCount = 0;
+    this._showedTasksControllers = [];
+  }
+
+  _onSortTypeChange() {
     if (this._sortModel) {
-      this._listController.clear();
+      this._removeTasks();
 
       switch (this._sortModel.checked) {
         case `default`:
@@ -47,15 +55,8 @@ export default class BoardController {
           break;
       }
 
-      this._showingTasksCount = 0;
-      this._showedTasksControllers = [];
-
-      if (this._tasksPerPage < this._tasksCount && !this._buttonLoadMoreView) {
-        this._buttonLoadMoreView = new ButtonLoadMoreView();
-        this._renderButtonLoadMore();
-      }
-
       this.renderTasksPage();
+      this._renderButtonLoadMore();
     }
   }
 
@@ -63,9 +64,19 @@ export default class BoardController {
     this._showedTasksControllers.forEach((task) => task.setDefaultView());
   }
 
+  _onFilterChange() {
+    this._removeTasks();
+
+    this._listController.updateTasksData();
+    this._tasksCount = this._tasksListModel.tasks.length;
+
+    this.renderTasksPage();
+    this._renderButtonLoadMore();
+  }
+
   _renderSort() {
     this._sortModel = new SortModel(SortTypes);
-    this._sortController = new SortController(this._sortModel, this._element, this._changeSortType);
+    this._sortController = new SortController(this._sortModel, this._element, this._onSortTypeChange);
     this._sortController.render();
   }
 
@@ -74,7 +85,9 @@ export default class BoardController {
   }
 
   _renderButtonLoadMore() {
-    if (this._buttonLoadMoreView) {
+    if (this._tasksPerPage < this._tasksCount && !this._buttonLoadMoreView) {
+      this._buttonLoadMoreView = new ButtonLoadMoreView();
+
       render(this._element, this._buttonLoadMoreView);
 
       this._buttonLoadMoreView.setClickHandler(() => {
@@ -108,11 +121,7 @@ export default class BoardController {
       this._renderSort();
       this._renderTasksList();
       this.renderTasksPage();
-
-      if (this._tasksPerPage < this._tasksCount) {
-        this._buttonLoadMoreView = new ButtonLoadMoreView();
-        this._renderButtonLoadMore();
-      }
+      this._renderButtonLoadMore();
     }
 
     render(this._containerElement, this._view);

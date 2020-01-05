@@ -1,5 +1,9 @@
 import AbstractView from "./abstract";
 
+const getFilterNameById = (id) => {
+  return id.replace(`filter__`, ``);
+};
+
 const createFilterTemplate = (filter) => {
   const {title, count, isChecked} = filter;
 
@@ -33,9 +37,18 @@ export default class FiltersView extends AbstractView {
     super();
 
     this._filters = filters;
+    this._filtersElements = this.getElement().querySelectorAll(`.filter__input`);
   }
 
   getTemplate() {
     return createFiltersTemplate(this._filters);
+  }
+
+  setChangeFilterHandler(handler) {
+    [...this._filtersElements].forEach((input) => {
+      input.addEventListener(`change`, function (event) {
+        handler(getFilterNameById(event.target.id));
+      });
+    });
   }
 }
