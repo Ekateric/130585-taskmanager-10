@@ -1,8 +1,7 @@
 import {Menu} from "./mock/menu";
-import Filters from "./data/filters";
 import MenuModel from "./models/menu";
 import MenuView from "./views/menu";
-import FiltersListModel from "./models/filters-list";
+
 import TasksListModel from "./models/tasks-list";
 import BoardController from "./controllers/board";
 import FiltersController from "./controllers/filters";
@@ -17,8 +16,7 @@ menuModel.checked = `task`;
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
-const filtersModel = new FiltersListModel(Filters, tasksListModel);
-const filtersController = new FiltersController(filtersModel, siteMainElement);
+const filtersController = new FiltersController(tasksListModel, siteMainElement);
 const boardController = new BoardController(tasksListModel, TASK_PER_PAGE, siteMainElement);
 
 render(siteHeaderElement, new MenuView(menuModel.items));

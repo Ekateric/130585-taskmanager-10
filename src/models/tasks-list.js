@@ -12,7 +12,8 @@ export default class TasksListModel {
     this._isEmpty = this._tasks.length === 0;
 
     this._filter = Filters.ALL;
-    this._filterChangeHandler = null;
+    this._filterChangeHandlers = [];
+    this._dataChangeHandlers = [];
   }
 
   _createTasksModels(data) {
@@ -40,6 +41,8 @@ export default class TasksListModel {
 
       newTaskModel = new TaskModel(Object.assign({}, oldTaskModel, newData));
       this._tasks = [].concat(this._tasks.slice(0, taskIndex), newTaskModel, this._tasks.slice(taskIndex + 1));
+
+      this._dataChangeHandlers.forEach((handler) => handler());
     }
 
     return newTaskModel;
@@ -47,11 +50,15 @@ export default class TasksListModel {
 
   setFilter(filterTitle) {
     this._filter = filterTitle;
-    this._filterChangeHandler();
+    this._filterChangeHandlers.forEach((handler) => handler());
   }
 
   setFilterChangeHandler(handler) {
-    this._filterChangeHandler = handler;
+    this._filterChangeHandlers.push(handler);
+  }
+
+  setDataChangeHandler(handler) {
+    this._dataChangeHandlers.push(handler);
   }
 
   get tasks() {
