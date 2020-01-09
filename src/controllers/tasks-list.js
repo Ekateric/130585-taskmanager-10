@@ -1,3 +1,4 @@
+import SortTypes from "../data/sort-types";
 import TasksListView from "../views/tasks-list";
 import TaskController from "./task";
 import render from "../utils/common/render";
@@ -12,7 +13,7 @@ export default class TasksListController {
 
     this._tasksModels = this._tasksListModel.tasks;
     this._sortedTasksModels = this._tasksModels.slice();
-    this._sortType = `default`;
+    this._sortType = SortTypes.DEFAULT.id;
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
@@ -38,13 +39,13 @@ export default class TasksListController {
     this._sortType = sortType;
 
     switch (sortType) {
-      case `default`:
+      case SortTypes.DEFAULT.id:
         this._sortByDefault();
         break;
-      case `date-up`:
+      case SortTypes.DATE_UP.id:
         this._sortByDateUp();
         break;
-      case `date-down`:
+      case SortTypes.DATE_DOWN.id:
         this._sortByDateDown();
         break;
     }

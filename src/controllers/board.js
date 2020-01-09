@@ -85,7 +85,7 @@ export default class BoardController {
   }
 
   _renderSort() {
-    this._sortModel = new SortModel(SortTypes);
+    this._sortModel = new SortModel(Object.values(SortTypes));
     this._sortController = new SortController(this._sortModel, this._element, this._onSortTypeChange);
     this._sortController.render();
   }
