@@ -53,6 +53,10 @@ export default class TaskController {
       replace(this._view, oldTaskView);
       replace(this._formView, oldTaskFormView);
 
+      if (this._mode === Mode.EDIT) {
+        this._replaceEditToView();
+      }
+
     } else {
       render(this._containerElement, this._view);
     }
@@ -79,7 +83,8 @@ export default class TaskController {
 
     this._formView.setSubmitFormHandler((event) => {
       event.preventDefault();
-      this._replaceEditToView();
+      const formData = this._formView.getData();
+      this._onDataChange(this, formData);
     });
 
     this._formView.setClickDeleteButtonHandler(() => this._onDataChange(this, null));

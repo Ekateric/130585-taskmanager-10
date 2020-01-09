@@ -13,6 +13,22 @@ const createRepeatingDaysObj = (days) => {
   return repeatingDays;
 };
 
+const parseFormData = (formData) => {
+  const repeatingDays = createRepeatingDaysObj(DAYS);
+  const dueDate = formData.get(`date`);
+
+  return {
+    description: formData.get(`text`),
+    color: formData.get(`color`),
+    tags: formData.getAll(`hashtag`),
+    dueDate: dueDate ? new Date(dueDate) : null,
+    repeatingDays: dueDate ? false : formData.getAll(`repeat`).reduce((acc, day) => {
+      acc[day] = true;
+      return acc;
+    }, repeatingDays)
+  };
+};
+
 const createRepeatingDayTemplate = (day, repeatingDays, id) => {
   const isChecked = repeatingDays && repeatingDays[day];
 
@@ -263,6 +279,13 @@ export default class TaskFormView extends AbstractSmartView {
     super.rerender();
 
     this._applyFlatpickr();
+  }
+
+  getData() {
+    const cardForm = this.getElement().querySelector(`.card__form`);
+    const formData = new FormData(cardForm);
+
+    return parseFormData(formData);
   }
 
   setSubmitFormHandler(handler) {

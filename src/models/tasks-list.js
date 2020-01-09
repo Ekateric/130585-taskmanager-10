@@ -36,16 +36,15 @@ export default class TasksListModel {
     return getTaskById(id, this._mock);
   }
 
-  updateModelById(modelId, newData) {
+  updateModelById(modelId, newTaskData) {
     const taskIndex = this._tasks.findIndex((task) => task.id === modelId);
     let newTaskModel = null;
 
     if (taskIndex > -1) {
       const oldTaskModel = this._tasks.find((task) => task.id === modelId);
 
-      newTaskModel = new TaskModel(Object.assign({}, oldTaskModel, newData));
+      newTaskModel = new TaskModel(Object.assign({}, oldTaskModel, newTaskData));
       this._tasks = [].concat(this._tasks.slice(0, taskIndex), newTaskModel, this._tasks.slice(taskIndex + 1));
-
       this._callHandlers(this._dataChangeHandlers);
     }
 
@@ -64,6 +63,12 @@ export default class TasksListModel {
     }
 
     return isDeleted;
+  }
+
+  addModel(taskData) {
+    const newTaskModel = new TaskModel(Object.assign({}, taskData));
+    this._tasks = [].concat(newTaskModel, this._tasks);
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   setFilter(filterTitle) {
