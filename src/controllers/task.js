@@ -1,3 +1,4 @@
+import Mode from "../data/mode";
 import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
 import render from "../utils/common/render";
@@ -12,7 +13,7 @@ export default class TaskController {
 
     this._view = null;
     this._formView = null;
-    this._isEditMode = false;
+    this._mode = Mode.DEFAULT;
 
     this._onExitForm = this._onExitForm.bind(this);
   }
@@ -20,12 +21,12 @@ export default class TaskController {
   _replaceViewToEdit() {
     this._onViewChange();
     replace(this._formView, this._view);
-    this._isEditMode = true;
+    this._mode = Mode.EDIT;
   }
 
   _replaceEditToView() {
     replace(this._view, this._formView);
-    this._isEditMode = false;
+    this._mode = Mode.DEFAULT;
     document.removeEventListener(`keydown`, this._onExitForm);
   }
 
@@ -82,7 +83,7 @@ export default class TaskController {
   }
 
   setDefaultView() {
-    if (this._isEditMode) {
+    if (this._mode === Mode.EDIT) {
       this._formView.reset();
       this._replaceEditToView();
     }
