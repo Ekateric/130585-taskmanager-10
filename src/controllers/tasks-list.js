@@ -3,7 +3,7 @@ import TaskController from "./task";
 import render from "../utils/common/render";
 
 export default class TasksListController {
-  constructor(tasksListModel, containerElement, onViewChange) {
+  constructor(tasksListModel, containerElement, onDataChange, onViewChange) {
     this._tasksListModel = tasksListModel;
     this._containerElement = containerElement;
 
@@ -12,39 +12,47 @@ export default class TasksListController {
 
     this._tasksModels = this._tasksListModel.tasks;
     this._sortedTasksModels = this._tasksModels.slice();
+    this._sortType = `default`;
 
+    this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
-    this._onDataChange = this._onDataChange.bind(this);
   }
 
-  _onDataChange(taskController, newData) {
-    const newTaskModel = this._tasksListModel.updateModelById(taskController.model.id, newData);
-
-    if (newTaskModel) {
-      taskController.model = newTaskModel;
-      taskController.render();
-      this.updateTasksData();
-    }
-  }
-
-  sortByDefault() {
+  _sortByDefault() {
     this._sortedTasksModels = this._tasksModels.slice();
   }
 
-  sortByDateUp() {
+  _sortByDateUp() {
     this._sortedTasksModels = this._tasksModels
       .slice()
       .sort((taskOne, taskTwo) => taskOne.dueDate - taskTwo.dueDate);
   }
 
-  sortByDateDown() {
+  _sortByDateDown() {
     this._sortedTasksModels = this._tasksModels
       .slice()
       .sort((taskOne, taskTwo) => taskTwo.dueDate - taskOne.dueDate);
   }
 
+  sort(sortType) {
+    this._sortType = sortType;
+
+    switch (sortType) {
+      case `default`:
+        this._sortByDefault();
+        break;
+      case `date-up`:
+        this._sortByDateUp();
+        break;
+      case `date-down`:
+        this._sortByDateDown();
+        break;
+    }
+  }
+
   updateTasksData() {
     this._tasksModels = this._tasksListModel.tasks;
+    this.sort(this._sortType);
   }
 
   renderPage(fromTaskIndex, toTaskIndex) {

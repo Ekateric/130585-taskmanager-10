@@ -3,6 +3,7 @@ import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
 import render from "../utils/common/render";
 import replace from "../utils/common/replace";
+import remove from "../utils/common/remove";
 
 export default class TaskController {
   constructor(taskModel, containerElement, onDataChange, onViewChange) {
@@ -80,6 +81,8 @@ export default class TaskController {
       event.preventDefault();
       this._replaceEditToView();
     });
+
+    this._formView.setClickDeleteButtonHandler(() => this._onDataChange(this, null));
   }
 
   setDefaultView() {
@@ -87,6 +90,12 @@ export default class TaskController {
       this._formView.reset();
       this._replaceEditToView();
     }
+  }
+
+  destroy() {
+    remove(this._view);
+    remove(this._formView);
+    document.removeEventListener(`keydown`, this._onExitForm);
   }
 
   get model() {

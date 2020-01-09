@@ -179,6 +179,7 @@ export default class TaskFormView extends AbstractSmartView {
     this._options = this._setOptions();
     this._flatpickr = null;
     this._submitHandler = null;
+    this._clickDeleteButtonHandler = null;
 
     this._applyFlatpickr();
     this._subscribeOnEvents();
@@ -254,6 +255,7 @@ export default class TaskFormView extends AbstractSmartView {
 
   recoveryListeners() {
     this.setSubmitFormHandler(this._submitHandler);
+    this.setClickDeleteButtonHandler(this._clickDeleteButtonHandler);
     this._subscribeOnEvents();
   }
 
@@ -269,6 +271,14 @@ export default class TaskFormView extends AbstractSmartView {
       .addEventListener(`submit`, handler);
 
     this._submitHandler = handler;
+  }
+
+  setClickDeleteButtonHandler(handler) {
+    this.getElement()
+      .querySelector(`.card__delete`)
+      .addEventListener(`click`, handler);
+
+    this._clickDeleteButtonHandler = handler;
   }
 
   reset() {

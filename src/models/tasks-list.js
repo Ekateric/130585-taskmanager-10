@@ -24,6 +24,10 @@ export default class TasksListModel {
     return this._tasks.every((task) => task.isArchive);
   }
 
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
+  }
+
   getAllTasks() {
     return getAllTasks(this._mock);
   }
@@ -42,10 +46,24 @@ export default class TasksListModel {
       newTaskModel = new TaskModel(Object.assign({}, oldTaskModel, newData));
       this._tasks = [].concat(this._tasks.slice(0, taskIndex), newTaskModel, this._tasks.slice(taskIndex + 1));
 
-      this._dataChangeHandlers.forEach((handler) => handler());
+      this._callHandlers(this._dataChangeHandlers);
     }
 
     return newTaskModel;
+  }
+
+  deleteModelById(modelId) {
+    const taskIndex = this._tasks.findIndex((task) => task.id === modelId);
+    let isDeleted = false;
+
+    if (taskIndex > -1) {
+      this._tasks = [].concat(this._tasks.slice(0, taskIndex), this._tasks.slice(taskIndex + 1));
+      this._callHandlers(this._dataChangeHandlers);
+
+      isDeleted = true;
+    }
+
+    return isDeleted;
   }
 
   setFilter(filterTitle) {
