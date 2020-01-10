@@ -1,7 +1,11 @@
 import AbstractView from "./abstract";
 
+const getFilterNameById = (id) => {
+  return id.replace(`filter__`, ``);
+};
+
 const createFilterTemplate = (filter) => {
-  const {title, count} = filter;
+  const {title, count, isChecked} = filter;
 
   return (
     `<input
@@ -9,11 +13,11 @@ const createFilterTemplate = (filter) => {
         id="filter__${title}"
         class="filter__input visually-hidden"
         name="filter"
-        ${title === `all` ? `checked` : ``}
+        ${isChecked ? `checked` : ``}
         ${count ? `` : `disabled`}
       />
       <label for="filter__${title}" class="filter__label">
-        ${title} 
+        ${title}
         <span class="filter__${title}-count">${count}</span>
       </label>`
   );
@@ -33,9 +37,18 @@ export default class FiltersView extends AbstractView {
     super();
 
     this._filters = filters;
+    this._filtersElements = this.getElement().querySelectorAll(`.filter__input`);
   }
 
   getTemplate() {
     return createFiltersTemplate(this._filters);
+  }
+
+  setChangeFilterHandler(handler) {
+    [...this._filtersElements].forEach((input) => {
+      input.addEventListener(`change`, function (event) {
+        handler(getFilterNameById(event.target.id));
+      });
+    });
   }
 }

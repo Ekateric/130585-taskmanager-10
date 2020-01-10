@@ -1,4 +1,4 @@
-import getRandomInt from "../utils/getRandomInt";
+import getRandomInt from "../utils/common/getRandomInt";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
 

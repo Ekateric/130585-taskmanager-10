@@ -1,7 +1,10 @@
+import Mode from "../data/mode";
+import RenderPosition from "../data/render-position";
 import TaskView from "../views/task";
 import TaskFormView from "../views/task-form";
-import render from "../utils/render";
-import replace from "../utils/replace";
+import render from "../utils/common/render";
+import replace from "../utils/common/replace";
+import remove from "../utils/common/remove";
 
 export default class TaskController {
   constructor(taskModel, containerElement, onDataChange, onViewChange) {
@@ -12,7 +15,7 @@ export default class TaskController {
 
     this._view = null;
     this._formView = null;
-    this._isEditMode = false;
+    this._mode = Mode.DEFAULT;
 
     this._onExitForm = this._onExitForm.bind(this);
   }
@@ -20,12 +23,12 @@ export default class TaskController {
   _replaceViewToEdit() {
     this._onViewChange();
     replace(this._formView, this._view);
-    this._isEditMode = true;
+    this._mode = Mode.EDIT;
   }
 
   _replaceEditToView() {
     replace(this._view, this._formView);
-    this._isEditMode = false;
+    this._mode = Mode.DEFAULT;
     document.removeEventListener(`keydown`, this._onExitForm);
   }
 
@@ -33,12 +36,16 @@ export default class TaskController {
     const isEscKey = event.key === `Escape` || event.key === `Esc`;
 
     if (isEscKey) {
+      if (this._mode === Mode.ADD) {
+        this._onDataChange(this, null, this._mode);
+      }
+
       this._formView.reset();
       this._replaceEditToView();
     }
   }
 
-  render() {
+  render(mode) {
     const oldTaskView = this._view;
     const oldTaskFormView = this._formView;
 
@@ -47,13 +54,33 @@ export default class TaskController {
 
     this.setHandlers();
 
-    if (oldTaskView && oldTaskFormView) {
-      replace(this._view, oldTaskView);
-      replace(this._formView, oldTaskFormView);
+    switch (mode) {
+      case Mode.DEFAULT:
+        if (oldTaskView && oldTaskFormView) {
+          replace(this._view, oldTaskView);
+          replace(this._formView, oldTaskFormView);
 
-    } else {
-      render(this._containerElement, this._view);
+          if (this._mode === Mode.EDIT) {
+            this._replaceEditToView();
+          }
+
+        } else {
+          render(this._containerElement, this._view);
+        }
+        break;
+
+      case Mode.ADD:
+        if (oldTaskView && oldTaskFormView) {
+          remove(oldTaskView);
+          remove(oldTaskFormView);
+        }
+
+        document.addEventListener(`keydown`, this._onExitForm);
+        render(this._containerElement, this._formView, RenderPosition.AFTERBEGIN);
+        break;
     }
+
+    this._mode = mode;
   }
 
   setHandlers() {
@@ -77,15 +104,24 @@ export default class TaskController {
 
     this._formView.setSubmitFormHandler((event) => {
       event.preventDefault();
-      this._replaceEditToView();
+      const formData = this._formView.getData();
+      this._onDataChange(this, formData, this._mode);
     });
+
+    this._formView.setClickDeleteButtonHandler(() => this._onDataChange(this, null, this._mode));
   }
 
   setDefaultView() {
-    if (this._isEditMode) {
+    if (this._mode === Mode.EDIT) {
       this._formView.reset();
       this._replaceEditToView();
     }
+  }
+
+  destroy() {
+    remove(this._view);
+    remove(this._formView);
+    document.removeEventListener(`keydown`, this._onExitForm);
   }
 
   get model() {
