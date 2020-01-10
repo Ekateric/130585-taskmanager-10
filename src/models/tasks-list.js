@@ -3,6 +3,7 @@ import TaskModel from "./task";
 import TasksMock from "../mock/tasks";
 import getFilteredTasks from "../utils/filter/getFilteredTasks";
 import Filters from "../data/filters";
+import EmptyTask from "../data/empty-task";
 
 export default class TasksListModel {
   constructor() {
@@ -26,6 +27,10 @@ export default class TasksListModel {
 
   _callHandlers(handlers) {
     handlers.forEach((handler) => handler());
+  }
+
+  createEmptyTaskModel() {
+    return new TaskModel(EmptyTask);
   }
 
   getAllTasks() {
@@ -69,6 +74,8 @@ export default class TasksListModel {
     const newTaskModel = new TaskModel(Object.assign({}, taskData));
     this._tasks = [].concat(newTaskModel, this._tasks);
     this._callHandlers(this._dataChangeHandlers);
+
+    return newTaskModel;
   }
 
   setFilter(filterTitle) {

@@ -2,6 +2,7 @@ import SortTypes from "../data/sort-types";
 import TasksListView from "../views/tasks-list";
 import TaskController from "./task";
 import render from "../utils/common/render";
+import Mode from "../data/mode";
 
 export default class TasksListController {
   constructor(tasksListModel, containerElement, onDataChange, onViewChange) {
@@ -62,7 +63,7 @@ export default class TasksListController {
       .map((taskModel) => {
         const taskController = new TaskController(taskModel, this._element, this._onDataChange, this._onViewChange);
 
-        taskController.render();
+        taskController.render(Mode.DEFAULT);
 
         return taskController;
       });
@@ -74,6 +75,15 @@ export default class TasksListController {
 
   clear() {
     this._element.innerHTML = ``;
+  }
+
+  createTask() {
+    const emptyTaskModel = this._tasksListModel.createEmptyTaskModel();
+    const emptyTaskController = new TaskController(emptyTaskModel, this._element, this._onDataChange, this._onViewChange);
+
+    emptyTaskController.render(Mode.ADD);
+
+    return emptyTaskController;
   }
 
   get isAllArchived() {

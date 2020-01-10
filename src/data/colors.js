@@ -1,7 +1,9 @@
+import Color from "./color";
+
 export default [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
+  Color.BLACK,
+  Color.YELLOW,
+  Color.BLUE,
+  Color.GREEN,
+  Color.PINK
 ];

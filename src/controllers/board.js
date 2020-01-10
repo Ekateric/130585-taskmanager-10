@@ -7,6 +7,7 @@ import ButtonLoadMoreView from "../views/button-load-more";
 import NoTasksView from "../views/no-tasks";
 import render from "../utils/common/render";
 import remove from "../utils/common/remove";
+import Mode from "../data/mode";
 
 export default class BoardController {
   constructor(tasksListModel, tasksPerPage, containerElement) {
@@ -16,6 +17,7 @@ export default class BoardController {
 
     this._tasksCount = this._tasksListModel.tasks.length;
     this._showingTasksCount = 0;
+    this._creatingTask = null;
 
     this._view = new BoardView();
     this._element = this._view.getElement();
@@ -55,8 +57,25 @@ export default class BoardController {
     this._updateTasks();
   }
 
-  _onDataChange(taskController, newData) {
-    if (newData === null) {
+  _onDataChange(taskController, newData, mode = Mode.EDIT) {
+    if (mode === Mode.ADD) {
+      this._creatingTask = null;
+
+      if (newData === null) {
+        taskController.destroy();
+        this._updateTasks(this._showingTasksCount);
+
+      } else {
+        const newTaskModel = this._tasksListModel.addModel(newData);
+
+        taskController.model = newTaskModel;
+        taskController.render(Mode.DEFAULT);
+        this._listController.updateTasksData();
+        this._showedTaskControllers = [].concat(taskController, this._showedTaskControllers);
+        this._showingTasksCount = this._showedTaskControllers.length;
+      }
+
+    } else if (newData === null) {
       const isDeleted = this._tasksListModel.deleteModelById(taskController.model.id);
 
       if (isDeleted) {
@@ -69,7 +88,7 @@ export default class BoardController {
 
       if (newTaskModel) {
         taskController.model = newTaskModel;
-        taskController.render();
+        taskController.render(Mode.DEFAULT);
         this._listController.updateTasksData();
       }
     }
@@ -125,7 +144,9 @@ export default class BoardController {
   }
 
   createTask() {
-    
+    if (!this._creatingTask) {
+      this._creatingTask = this._listController.createTask();
+    }
   }
 
   render() {
