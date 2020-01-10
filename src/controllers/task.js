@@ -49,18 +49,20 @@ export default class TaskController {
     const oldTaskView = this._view;
     const oldTaskFormView = this._formView;
 
-    this._mode = mode;
     this._view = new TaskView(this._model);
     this._formView = new TaskFormView(this._model);
 
     this.setHandlers();
 
-    switch (this._mode) {
+    switch (mode) {
       case Mode.DEFAULT:
         if (oldTaskView && oldTaskFormView) {
           replace(this._view, oldTaskView);
           replace(this._formView, oldTaskFormView);
-          this._replaceEditToView();
+
+          if (this._mode === Mode.EDIT) {
+            this._replaceEditToView();
+          }
 
         } else {
           render(this._containerElement, this._view);
@@ -77,6 +79,8 @@ export default class TaskController {
         render(this._containerElement, this._formView, RenderPosition.AFTERBEGIN);
         break;
     }
+
+    this._mode = mode;
   }
 
   setHandlers() {
