@@ -71,7 +71,7 @@ export default class TasksListModel {
   }
 
   addModel(taskData) {
-    const newTaskModel = new TaskModel(Object.assign({}, taskData));
+    const newTaskModel = new TaskModel(Object.assign({}, taskData, {id: String(new Date().getTime() + Math.random())}));
     this._tasks = [].concat(newTaskModel, this._tasks);
     this._callHandlers(this._dataChangeHandlers);
 
