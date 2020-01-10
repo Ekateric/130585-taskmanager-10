@@ -1,7 +1,11 @@
 import AbstractSmartView from "./abstract-smart";
 import flatpickr from "flatpickr";
+import he from "he";
 import DAYS from "../data/days";
 import COLORS from "../data/colors";
+
+const MIN_DESCRIPTION_LENGTH = 1;
+const MAX_DESCRIPTION_LENGTH = 140;
 
 const createRepeatingDaysObj = (days) => {
   const repeatingDays = {};
@@ -11,6 +15,13 @@ const createRepeatingDaysObj = (days) => {
   });
 
   return repeatingDays;
+};
+
+const isAllowableDescriptionLength = (description) => {
+  const length = description.length;
+
+  return length >= MIN_DESCRIPTION_LENGTH &&
+    length <= MAX_DESCRIPTION_LENGTH;
 };
 
 const parseFormData = (formData) => {
@@ -87,9 +98,9 @@ const createColorTemplate = (color, checkedColor, id) => {
 };
 
 const createTaskFormTemplate = (task, options) => {
-  const {id, description, tags, color, correctTime, isDeadline} = task;
+  const {id, tags, color, correctTime, isDeadline} = task;
   const {date, time} = correctTime;
-  const {repeatingDaysOption, isDateShowOption, isRepeatOption} = options;
+  const {currentDescriptionOption, repeatingDaysOption, isDateShowOption, isRepeatOption} = options;
 
   const tagsTemplate = Array.from(tags).map((tag) => createTagTemplate(tag)).join(`\n`);
   const repeatingDaysTemplate = DAYS.map((constDay) => createRepeatingDayTemplate(constDay, repeatingDaysOption, id)).join(`\n`);
@@ -99,7 +110,8 @@ const createTaskFormTemplate = (task, options) => {
   const repeatClass = isRepeatOption ? `card--repeat` : ``;
 
   const isBlockSaveButton = (isDateShowOption && isRepeatOption) ||
-    (isRepeatOption && !Object.values(repeatingDaysOption).some(Boolean));
+    (isRepeatOption && !Object.values(repeatingDaysOption).some(Boolean)) ||
+    !isAllowableDescriptionLength(currentDescriptionOption);
 
   return (
     `<article class="card card--edit card--${color} ${deadlineClass} ${repeatClass}">
@@ -117,7 +129,7 @@ const createTaskFormTemplate = (task, options) => {
                 class="card__text"
                 placeholder="Start typing your text here..."
                 name="text"
-              >${description}</textarea>
+              >${currentDescriptionOption}</textarea>
             </label>
           </div>
 
@@ -203,6 +215,7 @@ export default class TaskFormView extends AbstractSmartView {
 
   _setOptions() {
     return {
+      currentDescriptionOption: he.encode(this._task.description),
       isDateShowOption: this._task.isDateShow,
       isRepeatOption: this._task.isRepeat,
       repeatingDaysOption: this._task.isRepeat ? Object.assign({}, this._task.repeatingDays) : createRepeatingDaysObj(DAYS)
@@ -251,7 +264,7 @@ export default class TaskFormView extends AbstractSmartView {
     const repeatDaysInputs = this.getElement()
       .querySelectorAll(`.card__repeat-day-input`);
 
-    Array.from(repeatDaysInputs).forEach((input) => {
+    [...repeatDaysInputs].forEach((input) => {
       input.addEventListener(`change`, (event) => {
         this._options.repeatingDaysOption[event.target.value] = event.target.checked;
         this.rerender();
@@ -259,10 +272,22 @@ export default class TaskFormView extends AbstractSmartView {
     });
   }
 
+  _onDescriptionInput() {
+    this.getElement()
+      .querySelector(`.card__text`)
+      .addEventListener(`input`, (event) => {
+        this._options.currentDescriptionOption = event.target.value;
+
+        const saveButtonElement = this.getElement().querySelector(`.card__save`);
+        saveButtonElement.disabled = !isAllowableDescriptionLength(this._options.currentDescriptionOption);
+      });
+  }
+
   _subscribeOnEvents() {
     this._onDeadlineToggleClick();
     this._onRepeatToggleClick();
     this._onRepeatDayChange();
+    this._onDescriptionInput();
   }
 
   getTemplate() {

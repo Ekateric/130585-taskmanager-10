@@ -1,3 +1,4 @@
+import he from "he";
 import AbstractView from "./abstract";
 
 const createTagsTemplate = (tags) => {
@@ -16,6 +17,7 @@ const createTagsTemplate = (tags) => {
 const createTaskTemplate = (task) => {
   const {description, tags, color, correctTime, isFavorite, isArchive, isDeadline, isRepeat} = task;
   const {date, time} = correctTime;
+  const encodedDescription = he.encode(description);
 
   const tagsTemplate = createTagsTemplate(tags);
   const deadlineClass = isDeadline ? `card--deadline` : ``;
@@ -46,7 +48,7 @@ const createTaskTemplate = (task) => {
           </div>
 
           <div class="card__textarea-wrap">
-            <p class="card__text">${description}</p>
+            <p class="card__text">${encodedDescription}</p>
           </div>
 
           <div class="card__settings">
