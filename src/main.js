@@ -18,8 +18,16 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const filtersController = new FiltersController(tasksListModel, siteMainElement);
 const boardController = new BoardController(tasksListModel, TASK_PER_PAGE, siteMainElement);
+const menuView = new MenuView(menuModel.items);
 
-render(siteHeaderElement, new MenuView(menuModel.items));
+render(siteHeaderElement, menuView);
 filtersController.render();
 boardController.render();
+
+menuView
+  .getElement()
+  .querySelector(`.control__label--new-task`)
+  .addEventListener(`click`, () => {
+    boardController.createTask();
+  });
 

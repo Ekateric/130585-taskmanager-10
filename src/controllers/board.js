@@ -124,6 +124,10 @@ export default class BoardController {
     }
   }
 
+  createTask() {
+    
+  }
+
   render() {
     if (this._listController.isAllArchived || this._listController.isEmpty) {
       this._renderNoTasks();
